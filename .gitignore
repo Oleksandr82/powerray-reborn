@@ -22,6 +22,9 @@ apk_raw/
 # Device-specific data
 powerray_params.txt
 
+# Cockpit runtime state (PID/log files created by start-cockpit.ps1)
+.state/
+
 # OS
 .DS_Store
 Thumbs.db

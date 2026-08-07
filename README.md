@@ -38,6 +38,18 @@ The PowerRay creates a WiFi AP (`PRA_Station_400314`). Once connected:
 
 ## Quick start
 
+### Offline field kit (recommended)
+
+For fully-offline use in the field (no internet required after one-time setup):
+
+1. **Once, with internet**: double-click `Setup-Offline.cmd` — creates a bundled `venv\` and installs all dependencies locally.
+2. **At the water**: double-click `Start-Cockpit.cmd` — starts the server and opens the browser automatically.
+3. **When done**: double-click `Stop-Cockpit.cmd`.
+
+See `INSTRUCTIONS.html` for the full illustrated field guide.
+
+### Manual / development setup
+
 ### Requirements
 
 ```bash

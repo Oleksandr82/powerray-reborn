@@ -20,6 +20,47 @@ PSE_IP   = '192.168.1.1';  PSE_PORT   = 5000   # Sonar PSE_230252
 MODES = {0:'STABILIZE',1:'ACRO',2:'ALT_HOLD',3:'AUTO',
          4:'GUIDED',7:'CIRCLE',9:'SURFACE',16:'POSHOLD',19:'MANUAL'}
 
+# --- MAVLink parameter type helpers ---
+# The PARAM_VALUE/PARAM_SET wire format always carries the value in a 4-byte
+# float field, but for non-float parameter types that field is a raw bit
+# reinterpretation (memcpy) of the real value, NOT a numeric cast. E.g. the
+# integer 1 is transmitted as the float whose bit pattern equals 0x00000001
+# (~1.4e-45), not as 1.0. We must reinterpret/re-encode using struct
+# accordingly, based on each parameter's MAV_PARAM_TYPE, or integer-typed
+# params (very common in this drone's PV_* namespace) show as denormalized
+# garbage on read and get corrupted on write.
+PARAM_TYPE_FORMATS = {
+    1: 'B',   # MAV_PARAM_TYPE_UINT8
+    2: 'b',   # MAV_PARAM_TYPE_INT8
+    3: 'H',   # MAV_PARAM_TYPE_UINT16
+    4: 'h',   # MAV_PARAM_TYPE_INT16
+    5: 'I',   # MAV_PARAM_TYPE_UINT32
+    6: 'i',   # MAV_PARAM_TYPE_INT32
+    9: 'f',   # MAV_PARAM_TYPE_REAL32
+    # UINT64/INT64/REAL64 (7,8,10) don't fit in the 4-byte wire field —
+    # left unhandled; such params (rare/absent here) fall back to raw float.
+}
+
+def decode_param_value(raw_value, param_type):
+    """Reinterpret the raw wire float according to the parameter's real type."""
+    fmt = PARAM_TYPE_FORMATS.get(param_type)
+    if not fmt or fmt == 'f':
+        return raw_value
+    raw_bytes = struct.pack('<f', raw_value)
+    return struct.unpack('<' + fmt, raw_bytes)[0]
+
+def encode_param_value(value, param_type):
+    """Encode a real (int or float) value into the raw wire float for this type."""
+    fmt = PARAM_TYPE_FORMATS.get(param_type)
+    if not fmt or fmt == 'f':
+        return float(value)
+    raw_bytes = struct.pack('<' + fmt, int(round(value)))
+    return struct.unpack('<f', raw_bytes)[0]
+
+# Caches each parameter's real MAV_PARAM_TYPE, keyed by name — populated as
+# PARAM_VALUE messages arrive, used by /param/set to encode writes correctly.
+param_types = {}
+
 # --- État global ---
 state = {
     'mav_connected': False,
@@ -110,12 +151,19 @@ def mav_loop(m):
 
         elif t == 'COMMAND_ACK':
             results = ['ACCEPTED','TEMP_REJECTED','DENIED','UNSUPPORTED','FAILED','IN_PROGRESS']
+            print(f"[MAV] COMMAND_ACK cmd={msg.command} result={msg.result}")
             broadcast('ack', {'cmd': msg.command, 'result': msg.result,
                               'text': results[msg.result] if msg.result < len(results) else str(msg.result)})
 
+        elif t == 'STATUSTEXT':
+            print(f"[MAV] STATUSTEXT sev={msg.severity} text={msg.text}")
+            broadcast('statustext', {'severity': msg.severity, 'text': msg.text})
+
         elif t == 'PARAM_VALUE':
-            state['params'][msg.param_id] = msg.param_value
-            broadcast('param', {'id': msg.param_id, 'value': msg.param_value,
+            param_types[msg.param_id] = msg.param_type
+            decoded = decode_param_value(msg.param_value, msg.param_type)
+            state['params'][msg.param_id] = decoded
+            broadcast('param', {'id': msg.param_id, 'value': decoded, 'type': msg.param_type,
                                 'index': msg.param_index, 'count': msg.param_count})
 
 # ═══════════════════════════════════════════
@@ -421,16 +469,30 @@ def get_params():
         mav.mav.param_request_list_send(mav.target_system, mav.target_component)
     return jsonify({'status': 'requesting'})
 
+@app.route('/param/get/<param_id>')
+def get_param(param_id):
+    if not mav: return jsonify({'error': 'MAVLink not connected'})
+    with mav_lock:
+        mav.mav.param_request_read_send(
+            mav.target_system, mav.target_component,
+            param_id.encode(), -1)
+    return jsonify({'status': 'requesting', 'id': param_id})
+
 @app.route('/param/set', methods=['POST'])
 def set_param():
     if not mav: return jsonify({'error': 'MAVLink not connected'})
     d = request.json
+    param_id = d['id']
+    # Use the real type learned from a previous PARAM_VALUE for this param
+    # (falls back to REAL32 if we've never seen it, e.g. set before loading).
+    param_type = param_types.get(param_id, mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
+    wire_value = encode_param_value(float(d['value']), param_type)
     with mav_lock:
         mav.mav.param_set_send(
             mav.target_system, mav.target_component,
-            d['id'].encode(), float(d['value']),
-            mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
-    return jsonify({'status': 'sent'})
+            param_id.encode(), wire_value,
+            param_type)
+    return jsonify({'status': 'sent', 'type': param_type})
 
 @app.route('/cam/connect', methods=['POST'])
 def cam_connect_route():
@@ -554,17 +616,22 @@ def on_joystick(data):
 
 @sio.on('arm')
 def on_arm(data):
-    if not mav: return
+    if not mav:
+        emit('cmd_error', {'msg': 'Cannot ARM: not connected to flight controller (FCU Off)'})
+        return
     do_arm = data.get('arm', True)
     with mav_lock:
         mav.mav.command_long_send(
             mav.target_system, mav.target_component,
             mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
             0, 1.0 if do_arm else 0.0, 0,0,0,0,0,0)
+    emit('cmd_sent', {'cmd': 'arm', 'arm': do_arm})
 
 @sio.on('set_mode')
 def on_set_mode(data):
-    if not mav: return
+    if not mav:
+        emit('cmd_error', {'msg': 'Cannot set mode: not connected to flight controller (FCU Off)'})
+        return
     mode_map = {v:k for k,v in MODES.items()}
     cm = mode_map.get(data.get('mode','MANUAL'), 19)
     with mav_lock:

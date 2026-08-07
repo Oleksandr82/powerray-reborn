@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>PowerRay Control</title>
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0a0e1a; color: #e0e8ff; font-family: 'Segoe UI', monospace; }
@@ -68,6 +68,7 @@
   .btn.success { border-color: #4caf50; color: #4caf50; }
   .btn.success:hover { background: #4caf50; color: #000; }
   .btn.active { background: #1e3a5f; }
+  .btn:disabled { opacity: .35; cursor: not-allowed; pointer-events: none; }
 
   .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 
@@ -163,6 +164,16 @@
       <div class="telem-row"><span class="telem-label">Vz</span><span class="telem-val" id="vz">0.00</span></div>
     </div>
 
+    <div class="card">
+      <h2>Service operations</h2>
+      <div class="telem-row"><span class="telem-label">PV_V_KEY_FLAG</span><span class="telem-val" id="key-flag-val">--</span></div>
+      <div class="btn-row">
+        <button class="btn success" id="activate-btn" onclick="setActivation(1)" disabled>Activate</button>
+        <button class="btn danger" id="deactivate-btn" onclick="setActivation(0)" disabled>Deactivate</button>
+      </div>
+      <small style="color:#607d9f;font-size:.7rem">Sets the FCU activation flag (PV_V_KEY_FLAG). Required once to unlock arming on a fresh/reset FCU.</small>
+    </div>
+
   </div>
 
   <!-- Center: Camera + Controls -->
@@ -207,8 +218,6 @@
           <option selected>MANUAL</option>
           <option>SURFACE</option>
         </select>
-        <button class="btn success" id="arm-btn" onclick="toggleArm()">ARM</button>
-        <button class="btn danger" onclick="send('/arm','POST',{arm:false})">DISARM</button>
       </div>
 
       <div id="joystick-area">
@@ -236,6 +245,34 @@
       <div id="log"></div>
     </div>
 
+    <div class="card">
+      <h2>Experimental</h2>
+      <div class="btn-row">
+        <button class="btn success" id="arm-btn" onclick="toggleArm()">ARM</button>
+        <button class="btn danger" onclick="send('/arm','POST',{arm:false})">DISARM</button>
+      </div>
+      <small style="color:#607d9f;font-size:.75rem;display:block;margin-top:8px;line-height:1.4;">
+        These MAVLink ARM/DISARM buttons are unreliable on this FCU (see below for the real physical
+        unlock/lock procedure that actually controls the propellers):
+      </small>
+      <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">
+        <img src="{{ url_for('static', filename='manual/powerray_unlock.jpg') }}" alt="Unlock diagram (thumbwheel left)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
+        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
+          <b>Unlocking:</b> first dial the left thumbwheel to the very left, then press the camera/Fish Finder
+          interface switch button until 1 second later, there's vibration to unlock. After unlocking,
+          the joystick can control the propeller rotation, battery level.
+        </small>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">
+        <img src="{{ url_for('static', filename='manual/powerray_lock.jpg') }}" alt="Lock diagram (thumbwheel right)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
+        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
+          <b>Locking:</b> first dial the left thumbwheel to the very right, then press the camera/Fish Finder
+          interface switch button until 1 second later, there's vibration to lock. After locking, if
+          controlling the joystick, the propeller will not be responding.
+        </small>
+      </div>
+    </div>
+
   </div>
 
   <!-- Right: Parameters -->
@@ -257,6 +294,11 @@ let throttle = 500;
 let joystickData = {x:0, y:0, z:500, r:0};
 let jsInterval = null;
 let allParams = {};
+let keyFlagRequested = false;
+
+function fetchKeyFlag() {
+  fetch('/param/get/PV_V_KEY_FLAG').catch(()=>{});
+}
 
 socket.on('status', d => {
   const mav = d.mav, cam = d.cam, sonar = d.sonar;
@@ -270,6 +312,11 @@ socket.on('status', d => {
   document.getElementById('btn-sonar-connect').textContent= sonar ? 'Sonar connected' : 'Connect sonar';
   document.getElementById('btn-sonar-connect').className  = 'btn' + (sonar ? ' active' : '');
   if (mav && !d._init) log('FCU connected!', 'ok');
+  if (mav && !keyFlagRequested) {
+    keyFlagRequested = true;
+    fetchKeyFlag();
+  }
+  if (!mav) keyFlagRequested = false;
 });
 
 socket.on('telemetry', d => {
@@ -313,13 +360,35 @@ socket.on('ack', d => {
   log('ACK cmd=' + d.cmd + ' -> ' + (results[d.result]||d.result), d.result===0?'ok':'err');
 });
 
+socket.on('cmd_error', d => {
+  log(d.msg, 'err');
+});
+
+socket.on('cmd_sent', d => {
+  log(d.cmd + ' command sent, waiting for FCU response...', 'info');
+});
+
+socket.on('statustext', d => {
+  log('FCU: ' + d.text, d.severity <= 3 ? 'err' : 'info');
+});
+
 socket.on('param', d => {
   allParams[d.id] = d.value;
+  if (d.id === 'PV_V_KEY_FLAG') {
+    document.getElementById('key-flag-val').textContent = d.value;
+    updateActivationButtons(d.value);
+  }
   if (d.index % 50 === 0 || d.index === d.count - 1) {
     document.getElementById('param-count').textContent = (d.index+1) + ' / ' + d.count + ' params';
     renderParams();
   }
 });
+
+function updateActivationButtons(flagVal) {
+  const activated = Number(flagVal) !== 0;
+  document.getElementById('activate-btn').disabled = activated;
+  document.getElementById('deactivate-btn').disabled = !activated;
+}
 
 function makeJoystick(elem, dotElem, labelElem, axes) {
   let active = false;
@@ -397,7 +466,9 @@ window.addEventListener('gamepaddisconnected', e => {
 });
 
 function toggleArm() {
-  socket.emit('arm', {arm: !armed});
+  const wantArm = !armed;
+  log((wantArm ? 'ARM' : 'DISARM') + ' requested...', 'info');
+  socket.emit('arm', {arm: wantArm});
 }
 
 function setMode(m) {
@@ -479,6 +550,25 @@ function setParam(id) {
   const val = document.getElementById('pi-' + id).value;
   fetch('/param/set', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,value:val})})
     .then(r=>r.json()).then(d=>log('SET ' + id + '=' + val,'ok'));
+}
+
+function setActivation(flag) {
+  const label = flag ? 'Activate' : 'Deactivate';
+  const warning = flag
+    ? 'ACTIVATE the drone?\n\nThis sets PV_V_KEY_FLAG=1 on the flight controller, permanently unlocking arming. This writes to live hardware.\n\nAre you sure?'
+    : 'DEACTIVATE the drone?\n\nThis sets PV_V_KEY_FLAG=0 on the flight controller, re-locking arming (the drone will refuse to arm again). This writes to live hardware.\n\nAre you sure?';
+  if (!window.confirm(warning)) {
+    log(label + ' cancelled by user.', 'info');
+    return;
+  }
+  log(label + ' requested (PV_V_KEY_FLAG=' + flag + ')...', 'info');
+  fetch('/param/set', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:'PV_V_KEY_FLAG',value:flag})})
+    .then(r=>r.json())
+    .then(d=>{
+      log(label + ' -> PV_V_KEY_FLAG set: ' + JSON.stringify(d), 'ok');
+      setTimeout(fetchKeyFlag, 500);
+    })
+    .catch(e=>log(label + ' failed: ' + e, 'err'));
 }
 
 function send(url, method, body) {

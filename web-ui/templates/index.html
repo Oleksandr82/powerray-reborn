@@ -72,6 +72,16 @@
 
   .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 
+  .speed-label { color: #607d9f; font-size: .7rem; margin-bottom: 6px; text-align: center; }
+  #speed-selector { display: flex; flex-direction: column; align-items: center; }
+  #speed-btn-col { display: flex; flex-direction: column; gap: 8px; }
+  .speed-btn { flex: 1; display: flex; flex-direction: column; align-items: center;
+               gap: 2px; padding: 8px 10px; cursor: default; pointer-events: none; }
+  .speed-gear { font-size: 1.3rem; font-weight: bold; }
+  .speed-detail { font-size: .65rem; color: #9fb3cc; white-space: nowrap; }
+  .speed-btn.active { background: #4fc3f7; color: #05131f; border-color: #4fc3f7; }
+  .speed-btn.active .speed-detail { color: #05131f; }
+
   select { background: #0a0e1a; color: #e0e8ff; border: 1px solid #1e3a5f;
            border-radius: 6px; padding: 6px 10px; font-size: .85rem; }
 
@@ -87,6 +97,25 @@
   #throttle-slider { writing-mode: vertical-lr; direction: rtl;
                      width: 30px; height: 100px; cursor: pointer;
                      accent-color: #4fc3f7; }
+
+  /* Joystick mode reference (manual p.15 style) */
+  #joystick-mode-bar { display: flex; align-items: center; justify-content: center;
+                        gap: 8px; margin-bottom: 10px; }
+  #joystick-mode-bar label { font-size: .75rem; color: #607d9f; }
+  .jm-diagram { display: flex; gap: 26px; justify-content: center; margin-bottom: 14px; }
+  .jm-stick { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .jm-stick-title { font-size: .7rem; color: #9fb3cc; font-weight: bold; }
+  .jm-cross { position: relative; width: 96px; height: 96px; }
+  .jm-center { position: absolute; top: 50%; left: 50%; width: 22px; height: 22px;
+               background: #4fc3f7; border-radius: 50%; transform: translate(-50%,-50%); opacity: .5; }
+  .jm-dir { position: absolute; display: flex; flex-direction: column; align-items: center;
+            gap: 2px; color: #4fc3f7; font-size: .65rem; width: 60px; text-align: center; }
+  .jm-dir .jm-arrow { font-size: 1rem; line-height: 1; }
+  .jm-dir.up    { top: -6px;  left: 50%; transform: translateX(-50%); }
+  .jm-dir.down  { bottom: -6px; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
+  .jm-dir.left  { left: -34px; top: 50%; transform: translateY(-50%); }
+  .jm-dir.right { right: -34px; top: 50%; transform: translateY(-50%); }
+  .jm-dir.jm-unused { color: #37475f; opacity: .5; }
 
   #params-panel { grid-column: 3; grid-row: 1 / 3; overflow-y: auto; }
   .param-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
@@ -208,19 +237,54 @@
 
     <div class="card">
       <h2>Control</h2>
-      <div class="btn-row">
-        <select id="mode-sel" onchange="setMode(this.value)">
-          <option>STABILIZE</option>
-          <option>ACRO</option>
-          <option>ALT_HOLD</option>
-          <option>GUIDED</option>
-          <option>POSHOLD</option>
-          <option selected>MANUAL</option>
-          <option>SURFACE</option>
+
+      <div id="joystick-mode-bar">
+        <label for="joystick-mode-sel">Remote control mode (reference, manual p.15):</label>
+        <select id="joystick-mode-sel" onchange="updateJoystickModeRef()">
+          <option value="1">MODE 1</option>
+          <option value="2">MODE 2</option>
+          <option value="3">MODE 3</option>
+          <option value="4" selected>MODE 4 (default)</option>
         </select>
+      </div>
+      <div class="jm-diagram">
+        <div class="jm-stick">
+          <div class="jm-stick-title">Left joystick</div>
+          <div class="jm-cross" id="jm-cross-left">
+            <div class="jm-center"></div>
+            <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
+            <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
+            <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
+            <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
+          </div>
+        </div>
+        <div class="jm-stick">
+          <div class="jm-stick-title">Right joystick</div>
+          <div class="jm-cross" id="jm-cross-right">
+            <div class="jm-center"></div>
+            <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
+            <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
+            <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
+            <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
+          </div>
+        </div>
       </div>
 
       <div id="joystick-area">
+        <div id="speed-selector">
+          <div class="speed-label">Speed gear</div>
+          <div id="speed-btn-col">
+            <div class="btn speed-btn" id="speed-btn-H">
+              <span class="speed-gear">H</span><span class="speed-detail">2&nbsp;m/s &middot; 4&nbsp;kt</span>
+            </div>
+            <div class="btn speed-btn" id="speed-btn-M">
+              <span class="speed-gear">M</span><span class="speed-detail">1&nbsp;m/s &middot; 2&nbsp;kt</span>
+            </div>
+            <div class="btn speed-btn" id="speed-btn-L">
+              <span class="speed-gear">L</span><span class="speed-detail">0.5&nbsp;m/s &middot; 1&nbsp;kt</span>
+            </div>
+          </div>
+        </div>
         <div class="joystick-wrap">
           <span class="joystick-label">PITCH / ROLL</span>
           <div class="joystick" id="js-left">
@@ -243,6 +307,13 @@
       </div>
 
       <div id="log"></div>
+
+      <div class="btn-row">
+        <button class="btn danger" id="emergency-surface-btn" onclick="emergencySurface()"
+                style="width:100%;font-weight:bold;letter-spacing:1px;padding:12px;">
+          &#x26A0; EMERGENCY SURFACE
+        </button>
+      </div>
     </div>
 
     <div class="card">
@@ -293,6 +364,7 @@ let recording = false;
 let throttle = 500;
 let joystickData = {x:0, y:0, z:500, r:0};
 let jsInterval = null;
+let localJoystickActive = false;
 let allParams = {};
 let keyFlagRequested = false;
 
@@ -320,7 +392,7 @@ socket.on('status', d => {
 });
 
 socket.on('telemetry', d => {
-  document.getElementById('mode-sel').value = d.mode;
+  updateSpeedGearUI(d.mode);
   armed = d.armed;
   document.getElementById('armed-badge').style.display = d.armed ? 'inline' : 'none';
   document.getElementById('arm-btn').textContent = d.armed ? 'DISARM' : 'ARM';
@@ -372,6 +444,20 @@ socket.on('statustext', d => {
   log('FCU: ' + d.text, d.severity <= 3 ? 'err' : 'info');
 });
 
+socket.on('rc_input', d => {
+  // Reflects whatever is actually driving the drone right now (the FCU's
+  // echo of the last control input it received). Skip while the user is
+  // actively dragging the on-screen sticks or using a gamepad, so local
+  // input doesn't visually fight with the echoed value.
+  if (localJoystickActive || jsInterval) return;
+  jsLeftElem._setDotFromNorm(d.y, -d.x);
+  jsRightElem._setDotFromNorm(d.r, 0);
+  document.getElementById('js-left-val').textContent = 'P:' + d.x + ' R:' + d.y;
+  document.getElementById('js-right-val').textContent = 'Y:' + d.r;
+  document.getElementById('thr-val').textContent = d.z;
+  document.getElementById('throttle-slider').value = d.z;
+});
+
 socket.on('param', d => {
   allParams[d.id] = d.value;
   if (d.id === 'PV_V_KEY_FLAG') {
@@ -384,6 +470,38 @@ socket.on('param', d => {
   }
 });
 
+// Reference-only diagram of the physical RC's 4 joystick modes (manual p.15).
+// Purely visual - does not change actual joystick axis wiring below.
+const JOYSTICK_MODES = {
+  1: { left:  { up: 'Forward',  down: 'Backward', left: 'Turn L', right: 'Turn R' },
+       right: { up: 'Up',       down: 'Down',      left: null,     right: null } },
+  2: { left:  { up: 'Up',       down: 'Down',      left: 'Turn L', right: 'Turn R' },
+       right: { up: 'Forward',  down: 'Backward',  left: null,     right: null } },
+  3: { left:  { up: 'Forward',  down: 'Backward',  left: null,     right: null },
+       right: { up: 'Up',       down: 'Down',      left: 'Turn L', right: 'Turn R' } },
+  4: { left:  { up: 'Up',       down: 'Down',      left: null,     right: null },
+       right: { up: 'Forward',  down: 'Backward',  left: 'Turn L', right: 'Turn R' } },
+};
+
+function updateJoystickModeRef() {
+  const mode = document.getElementById('joystick-mode-sel').value;
+  const cfg = JOYSTICK_MODES[mode];
+  renderJmCross('jm-cross-left', cfg.left);
+  renderJmCross('jm-cross-right', cfg.right);
+}
+
+function renderJmCross(crossId, cfg) {
+  const cross = document.getElementById(crossId);
+  ['up', 'down', 'left', 'right'].forEach(dir => {
+    const el = cross.querySelector('.jm-dir.' + dir);
+    const label = cfg[dir];
+    el.querySelector('.jm-txt').textContent = label || '\u2013';
+    el.classList.toggle('jm-unused', !label);
+  });
+}
+
+updateJoystickModeRef();
+
 function updateActivationButtons(flagVal) {
   const activated = Number(flagVal) !== 0;
   document.getElementById('activate-btn').disabled = activated;
@@ -393,6 +511,13 @@ function updateActivationButtons(flagVal) {
 function makeJoystick(elem, dotElem, labelElem, axes) {
   let active = false;
   const r = elem.offsetWidth / 2;
+
+  function setDotFromNorm(nx, ny) {
+    const scale = (r - 14) / 1000;
+    dotElem.style.left = (r + nx * scale) + 'px';
+    dotElem.style.top  = (r + ny * scale) + 'px';
+  }
+  elem._setDotFromNorm = setDotFromNorm;
 
   function update(ex, ey) {
     const rect = elem.getBoundingClientRect();
@@ -414,21 +539,24 @@ function makeJoystick(elem, dotElem, labelElem, axes) {
     labelElem.textContent = axes.label(0, 0);
   }
 
-  elem.addEventListener('mousedown',  e => { active=true; update(e.clientX, e.clientY); });
-  elem.addEventListener('touchstart', e => { active=true; update(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+  elem.addEventListener('mousedown',  e => { active=true; localJoystickActive=true; update(e.clientX, e.clientY); });
+  elem.addEventListener('touchstart', e => { active=true; localJoystickActive=true; update(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
   window.addEventListener('mousemove',  e => { if(active) update(e.clientX, e.clientY); });
   window.addEventListener('touchmove',  e => { if(active) update(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
-  window.addEventListener('mouseup',  () => { if(active){ active=false; reset(); }});
-  window.addEventListener('touchend', () => { if(active){ active=false; reset(); }});
+  window.addEventListener('mouseup',  () => { if(active){ active=false; localJoystickActive=false; reset(); }});
+  window.addEventListener('touchend', () => { if(active){ active=false; localJoystickActive=false; reset(); }});
 }
+
+const jsLeftElem  = document.getElementById('js-left');
+const jsRightElem = document.getElementById('js-right');
 
 const jslAxes = (nx, ny) => { joystickData.x = -ny; joystickData.y = nx; sendJoystick(); };
 jslAxes.label = (nx, ny) => 'P:' + (-ny) + ' R:' + nx;
-makeJoystick(document.getElementById('js-left'), document.getElementById('js-left-dot'), document.getElementById('js-left-val'), jslAxes);
+makeJoystick(jsLeftElem, document.getElementById('js-left-dot'), document.getElementById('js-left-val'), jslAxes);
 
 const jsrAxes = (nx, ny) => { joystickData.r = nx; sendJoystick(); };
 jsrAxes.label = (nx, ny) => 'Y:' + nx;
-makeJoystick(document.getElementById('js-right'), document.getElementById('js-right-dot'), document.getElementById('js-right-val'), jsrAxes);
+makeJoystick(jsRightElem, document.getElementById('js-right-dot'), document.getElementById('js-right-val'), jsrAxes);
 
 function updateThrottle(v) {
   throttle = parseInt(v);
@@ -453,6 +581,10 @@ window.addEventListener('gamepadconnected', e => {
       const z = Math.round((1 - gp.axes[3]) * 500);
       joystickData = {x, y, z, r};
       sendJoystick();
+      // Reflect the physical gamepad axes on the on-screen joystick dots too,
+      // not just the numeric labels, so the UI visually matches real input.
+      jsLeftElem._setDotFromNorm(y, -x);
+      jsRightElem._setDotFromNorm(r, 0);
       document.getElementById('js-left-val').textContent = 'P:' + x + ' R:' + y;
       document.getElementById('js-right-val').textContent = 'Y:' + r;
       document.getElementById('thr-val').textContent = z;
@@ -463,6 +595,8 @@ window.addEventListener('gamepadconnected', e => {
 window.addEventListener('gamepaddisconnected', e => {
   log('Gamepad disconnected', 'err');
   clearInterval(jsInterval); jsInterval = null;
+  jsLeftElem._setDotFromNorm(0, 0);
+  jsRightElem._setDotFromNorm(0, 0);
 });
 
 function toggleArm() {
@@ -474,6 +608,28 @@ function toggleArm() {
 function setMode(m) {
   socket.emit('set_mode', {mode: m});
   log('Mode -> ' + m, 'info');
+}
+
+// The mode field on this drone's firmware doesn't select real flight modes --
+// it's repurposed by PowerVision as a 3-stage speed gear indicator, driven
+// only by the physical L/M/H thumbwheel switch on the RC. It cannot be set
+// from this UI, so the gear indicator below is read-only.
+const MODE_TO_GEAR = {STABILIZE: 'L', ACRO: 'M', ALT_HOLD: 'H'};
+
+function updateSpeedGearUI(mode) {
+  const gear = MODE_TO_GEAR[mode];
+  ['L','M','H'].forEach(g => {
+    document.getElementById('speed-btn-' + g).classList.toggle('active', g === gear);
+  });
+}
+
+function emergencySurface() {
+  if (!window.confirm('EMERGENCY SURFACE?\n\nThis forces SURFACE mode and arms the drone if needed so it rises immediately.\n\nAre you sure?')) {
+    log('Emergency surface cancelled by user.', 'info');
+    return;
+  }
+  log('EMERGENCY SURFACE requested...', 'info');
+  socket.emit('emergency_surface', {});
 }
 
 function toggleRec() {

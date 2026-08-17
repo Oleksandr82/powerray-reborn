@@ -8,6 +8,29 @@ This is personal reverse engineering / maker work. We own the submarine, we docu
 
 ---
 
+## Community fork notice
+
+This repository is maintained as a public community continuation at:
+
+- https://github.com/Oleksandr82/powerray-reborn
+
+Original upstream project:
+
+- https://github.com/Erebus-io/erebus-io-powerray
+
+Goal of this fork:
+
+- Keep the toolkit usable for existing PowerRay owners.
+- Accept practical fixes and documentation improvements.
+- Preserve interoperability-focused reverse engineering work.
+
+Scope and expectations:
+
+- Community-maintained project with best-effort support.
+- Stability and repairability are prioritized over frequent feature releases.
+
+---
+
 ## What's working
 
 | Feature | Status |
@@ -113,6 +136,44 @@ See [`docs/`](docs/) for detailed protocol documentation:
 See [LEGAL_CHECK.md](LEGAL_CHECK.md) for the full legal analysis.
 
 Short version: all code in this repo is original. Protocol documentation is factual/functional (not copyrightable). Reverse engineering for interoperability is explicitly permitted under EU Directive 2009/24/EC Article 6, implemented in France as Article L122-6-1 CPI.
+
+---
+
+## Contributing
+
+Contributions are welcome, especially for:
+
+- Reliability fixes for field use
+- Hardware/protocol validation on real devices
+- Documentation quality and reproducibility
+- UI ergonomics and diagnostics
+
+Suggested workflow:
+
+1. Fork this repository.
+2. Create a feature branch.
+3. Keep commits focused and explain behavior changes.
+4. Open a pull request with test notes or reproduction steps.
+
+When relevant, include:
+
+- Device firmware version
+- Network capture details
+- Exact hardware variant (sub + controller + fishfinder)
+
+---
+
+## Upstream sync policy
+
+This fork tracks the original project as `upstream` and periodically imports useful changes.
+
+Typical local sync flow:
+
+```bash
+git fetch upstream
+git merge upstream/master
+git push origin master
+```
 
 ---
 

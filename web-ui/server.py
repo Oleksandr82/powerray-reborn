@@ -159,6 +159,13 @@ def mav_loop(m):
             print(f"[MAV] STATUSTEXT sev={msg.severity} text={msg.text}")
             broadcast('statustext', {'severity': msg.severity, 'text': msg.text})
 
+        elif t == 'MANUAL_CONTROL' and msg.get_srcSystem() == 2:
+            # The FCU echoes back the control inputs it's currently acting on
+            # (msg_id 69) — this reflects the PHYSICAL RC joystick position
+            # whenever the drone is being flown from the real remote, not
+            # just our own on-screen joystick sends.
+            broadcast('rc_input', {'x': msg.x, 'y': msg.y, 'z': msg.z, 'r': msg.r})
+
         elif t == 'PARAM_VALUE':
             param_types[msg.param_id] = msg.param_type
             decoded = decode_param_value(msg.param_value, msg.param_type)
@@ -451,6 +458,26 @@ def set_mode():
         mav.mav.set_mode_send(mav.target_system, 1, cm)
     return jsonify({'status': 'sent', 'mode': mode_name})
 
+def _send_emergency_surface():
+    """Force SURFACE mode and make sure the drone is armed so it can
+    actually rise (a disarmed FCU won't act on the mode change)."""
+    if not mav:
+        return {'error': 'MAVLink not connected'}
+    with mav_lock:
+        mav.mav.set_mode_send(mav.target_system, 1, 9)  # 9 = SURFACE
+        if not state.get('armed'):
+            mav.mav.command_long_send(
+                mav.target_system, mav.target_component,
+                mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
+                0, 1.0, 0,0,0,0,0,0)
+    return {'status': 'sent', 'mode': 'SURFACE'}
+
+@app.route('/surface', methods=['POST'])
+def surface():
+    result = _send_emergency_surface()
+    if 'error' in result: return jsonify(result)
+    return jsonify(result)
+
 @app.route('/control', methods=['POST'])
 def manual_control():
     if not mav: return jsonify({'error': 'MAVLink not connected'})
@@ -636,6 +663,14 @@ def on_set_mode(data):
     cm = mode_map.get(data.get('mode','MANUAL'), 19)
     with mav_lock:
         mav.mav.set_mode_send(mav.target_system, 1, cm)
+
+@sio.on('emergency_surface')
+def on_emergency_surface(data=None):
+    result = _send_emergency_surface()
+    if 'error' in result:
+        emit('cmd_error', {'msg': 'Emergency surface failed: ' + result['error']})
+    else:
+        emit('cmd_sent', {'cmd': 'emergency_surface', 'mode': 'SURFACE'})
 
 # ═══════════════════════════════════════════
 if __name__ == '__main__':

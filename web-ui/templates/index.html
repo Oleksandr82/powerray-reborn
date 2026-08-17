@@ -20,10 +20,11 @@
   .grid {
     display: grid;
     grid-template-columns: 260px 1fr 260px;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
     gap: 12px; padding: 12px; height: calc(100vh - 54px);
   }
-  #log-card { grid-column: 1 / 4; grid-row: 3; display: flex; flex-direction: column; }
+  #params-panel { grid-column: 1 / 4; grid-row: 3; max-height: 260px; }
+  #log-card { grid-column: 1 / 4; grid-row: 4; display: flex; flex-direction: column; }
 
   .card {
     background: #0d1525; border: 1px solid #1e3a5f;
@@ -129,7 +130,7 @@
   .jm-dir.right { right: -26px; top: 50%; transform: translateY(-50%); }
   .jm-dir.jm-unused { color: #37475f; opacity: .5; }
 
-  #params-panel { grid-column: 3; grid-row: 1 / 3; overflow-y: auto; }
+  #params-panel { overflow-y: auto; }
   .param-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
   .param-name { flex: 1; font-size: .75rem; color: #607d9f; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .param-input { width: 80px; background: #0a0e1a; border: 1px solid #1e3a5f;
@@ -137,6 +138,8 @@
   .param-set-btn { padding: 2px 8px; font-size: .7rem; background: #0a0e1a;
                    border: 1px solid #4fc3f7; color: #4fc3f7; border-radius: 4px; cursor: pointer; }
   .param-set-btn:hover { background: #4fc3f7; color: #000; }
+  .param-interp { flex: 2; font-size: .7rem; color: #8fa8c4; overflow: hidden; text-overflow: ellipsis;
+                  white-space: nowrap; padding-left: 6px; border-left: 1px solid #1e3a5f; }
   #param-search { width: 100%; margin-bottom: 8px; background: #0a0e1a; border: 1px solid #1e3a5f;
                   color: #e0e8ff; border-radius: 6px; padding: 6px 10px; font-size: .8rem; }
   #param-count { font-size: .7rem; color: #607d9f; margin-bottom: 6px; }
@@ -407,7 +410,11 @@ let joystickData = {x:0, y:0, z:0, r:0};
 let jsInterval = null;
 let localJoystickActive = false;
 let allParams = {};
+let paramDict = {};
 let keyFlagRequested = false;
+
+fetch('/param_dictionary.json').then(r=>r.json()).then(d=>{ paramDict = d; }).catch(()=>{});
+
 
 function fetchKeyFlag() {
   fetch('/param/get/PV_V_KEY_FLAG').catch(()=>{});
@@ -807,10 +814,21 @@ function renderParams() {
     const row = document.createElement('div');
     row.className = 'param-row';
     const v = typeof val === 'number' ? (Number.isInteger(val) ? val : val.toFixed(4)) : val;
+    const info = paramDict[id];
+    const isPV = id.startsWith('PV_');
+    let interp = '';
+    if (info) {
+      let extra = [];
+      if (info.unit) extra.push(info.unit);
+      if (info.min !== undefined && info.max !== undefined) extra.push(info.min + '..' + info.max);
+      if (info.values && info.values[val] !== undefined) extra.push('= ' + info.values[val]);
+      interp = (info.desc || '') + (extra.length ? ' (' + extra.join(', ') + ')' : '');
+    }
     row.innerHTML =
-      '<span class="param-name" title="' + id + '">' + id + '</span>' +
+      '<span class="param-name" title="' + id + '">' + (isPV ? '&#9733; ' : '') + id + '</span>' +
       '<input class="param-input" id="pi-' + id + '" value="' + v + '" type="text">' +
-      '<button class="param-set-btn" onclick="setParam(\'' + id + '\')">SET</button>';
+      '<button class="param-set-btn" onclick="setParam(\'' + id + '\')">SET</button>' +
+      '<span class="param-interp" title="' + (interp ? interp.replace(/"/g, '&quot;') : '') + '">' + (interp || '') + '</span>';
     list.appendChild(row);
   }
   document.getElementById('param-count').textContent = count + ' / ' + Object.keys(allParams).length + ' params';

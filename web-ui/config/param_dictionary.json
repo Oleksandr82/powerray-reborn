@@ -1,0 +1,2269 @@
+{
+  "ATT_ACC_COMP": {
+    "desc": "Enable/disable acceleration compensation in attitude estimation (centripetal, tangential).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "ATT_BIAS_MAX": {
+    "desc": "Gyro bias limit for the attitude estimator.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "rad/s"
+  },
+  "ATT_EXT_HDG_M": {
+    "desc": "External heading usage mode (0=none, 1=vision, 2=motion capture).",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "ATT_MAG_DECL": {
+    "desc": "Magnetic declination, set automatically if ATT_MAG_DECL_A is enabled.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "ATT_MAG_DECL_A": {
+    "desc": "Automatic magnetic declination lookup from GPS position.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "ATT_VIBE_THRESH": {
+    "desc": "Vibration threshold that triggers a warning/failsafe reaction.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "ATT_W_ACC": {
+    "desc": "Complementary filter accelerometer weight.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "ATT_W_EXT_HDG": {
+    "desc": "Complementary filter external heading weight.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "ATT_W_GYRO_BIAS": {
+    "desc": "Complementary filter gyro bias weight.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "ATT_W_MAG": {
+    "desc": "Complementary filter magnetometer weight.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "BAT_CAPACITY": {
+    "desc": "Battery capacity; -1 disables capacity-based remaining-charge estimation.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "mAh"
+  },
+  "BAT_CRIT_THR": {
+    "desc": "Critical battery threshold (fraction of full charge that triggers critical failsafe).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "BAT_C_OFFSET": {
+    "desc": "Battery current sensor analog offset/calibration; -1 = use board default.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "BAT_C_SCALING": {
+    "desc": "Battery current sensor analog scaling factor; -1 = use board default.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "A/V"
+  },
+  "BAT_LOW_THR": {
+    "desc": "Low battery threshold (fraction of full charge that triggers low-battery failsafe).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "BAT_N_CELLS": {
+    "desc": "Number of battery cells in series.",
+    "max": 24,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "BAT_V_CHARGED": {
+    "desc": "Full/charged voltage per battery cell.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "V"
+  },
+  "BAT_V_EMPTY": {
+    "desc": "Empty voltage per battery cell.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "V"
+  },
+  "BAT_V_LOAD_DROP": {
+    "desc": "Voltage drop compensation per battery cell under full load.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "V"
+  },
+  "BAT_V_SCALING": {
+    "desc": "Battery voltage sensor analog scaling factor; -1 = use board default.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "V/V"
+  },
+  "CAL_ACC0_ID": {
+    "desc": "Device ID of accelerometer #0 used for the stored calibration below.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_ACC0_XOFF": {
+    "desc": "Accelerometer #0 X-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m/s^2"
+  },
+  "CAL_ACC0_XSCALE": {
+    "desc": "Accelerometer #0 X-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_ACC0_YOFF": {
+    "desc": "Accelerometer #0 Y-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m/s^2"
+  },
+  "CAL_ACC0_YSCALE": {
+    "desc": "Accelerometer #0 Y-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_ACC0_ZOFF": {
+    "desc": "Accelerometer #0 Z-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m/s^2"
+  },
+  "CAL_ACC0_ZSCALE": {
+    "desc": "Accelerometer #0 Z-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_ACC_PRIME": {
+    "desc": "Device ID of the primary (preferred) accelerometer.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_GYRO0_ID": {
+    "desc": "Device ID of gyroscope #0 used for the stored calibration below.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_GYRO0_XOFF": {
+    "desc": "Gyroscope #0 X-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "rad/s"
+  },
+  "CAL_GYRO0_XSCALE": {
+    "desc": "Gyroscope #0 X-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_GYRO0_YOFF": {
+    "desc": "Gyroscope #0 Y-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "rad/s"
+  },
+  "CAL_GYRO0_YSCALE": {
+    "desc": "Gyroscope #0 Y-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_GYRO0_ZOFF": {
+    "desc": "Gyroscope #0 Z-axis offset.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "rad/s"
+  },
+  "CAL_GYRO0_ZSCALE": {
+    "desc": "Gyroscope #0 Z-axis scale factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "CAL_GYRO_PRIME": {
+    "desc": "Device ID of the primary (preferred) gyroscope.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG0_ID": {
+    "desc": "Device ID of magnetometer #0.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG0_ROT": {
+    "desc": "Rotation of magnetometer #0 relative to the airframe/hull (-1 = use board default).",
+    "max": 35,
+    "min": -1,
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG1_ID": {
+    "desc": "Device ID of magnetometer #1 (if present).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG1_ROT": {
+    "desc": "Rotation of magnetometer #1 relative to the airframe/hull.",
+    "max": 35,
+    "min": -1,
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG2_ID": {
+    "desc": "Device ID of magnetometer #2 (if present).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG2_ROT": {
+    "desc": "Rotation of magnetometer #2 relative to the airframe/hull.",
+    "max": 35,
+    "min": -1,
+    "source": "px4",
+    "type": "INT"
+  },
+  "CAL_MAG_SIDES": {
+    "desc": "Bitmask of which of the 6 cube sides were completed during onboard mag calibration.",
+    "max": 63,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "CBRK_AIRSPD_CHK": {
+    "desc": "Circuit breaker: disable airspeed sensor check (irrelevant underwater; fixed-wing leftover).",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "162128": "Check disabled"
+    }
+  },
+  "CBRK_BUZZER": {
+    "desc": "Circuit breaker: disable the buzzer/tone alarm.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Buzzer enabled",
+      "782090": "Buzzer disabled"
+    }
+  },
+  "CBRK_ENGINEFAIL": {
+    "desc": "Circuit breaker: disable the engine/motor failure detection check.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "284953": "Check disabled"
+    }
+  },
+  "CBRK_GPSFAIL": {
+    "desc": "Circuit breaker: disable the GPS failure check (expected to be disabled \u2014 no GPS underwater).",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "240024": "Check disabled"
+    }
+  },
+  "CBRK_IO_SAFETY": {
+    "desc": "Circuit breaker: disable the IO safety switch requirement before arming.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "22027": "Check disabled"
+    }
+  },
+  "CBRK_NO_VISION": {
+    "desc": "Circuit breaker: disable the requirement for vision/optical-flow position source.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "328754": "Check disabled"
+    }
+  },
+  "CBRK_RATE_CTRL": {
+    "desc": "Circuit breaker: disable the rate controller (dangerous \u2014 motors would run open-loop).",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "140253": "Check disabled"
+    }
+  },
+  "CBRK_SUPPLY_CHK": {
+    "desc": "Circuit breaker: disable the power supply health check.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "894281": "Check disabled"
+    }
+  },
+  "CBRK_USB_CHK": {
+    "desc": "Circuit breaker: disable the \"USB connected, refuse to arm\" safety check.",
+    "source": "px4",
+    "type": "INT",
+    "values": {
+      "0": "Check enabled",
+      "197848": "Check disabled"
+    }
+  },
+  "COM_AUTOS_PAR": {
+    "desc": "Parachute deployment on auto mission failure (fixed-wing feature, likely unused).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "COM_DISARM_LAND": {
+    "desc": "Time after landing detection before auto-disarm; 0 disables.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "COM_DL_LOSS_T": {
+    "desc": "Data link (telemetry) loss timeout before triggering failsafe.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "COM_DL_REG_T": {
+    "desc": "Data link regain time required before clearing the data-link-lost failsafe.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "COM_EF_C2T": {
+    "desc": "Engine failure: current-to-throttle ratio threshold used for failure detection.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "COM_EF_THROT": {
+    "desc": "Engine failure: throttle threshold above which the check is active.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "COM_EF_TIME": {
+    "desc": "Engine failure: time above threshold before it is flagged as failed.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "COM_HOME_H_T": {
+    "desc": "Horizontal threshold for accepting a new home position.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "COM_HOME_V_T": {
+    "desc": "Vertical threshold for accepting a new home position.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "COM_LOW_BAT_ACT": {
+    "desc": "Action to take when the low-battery threshold is crossed.",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM",
+    "values": {
+      "0": "Warning only",
+      "1": "Return to launch",
+      "2": "Land"
+    }
+  },
+  "COM_RC_IN_MODE": {
+    "desc": "RC input source selection.",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM",
+    "values": {
+      "0": "RC transmitter required",
+      "1": "Joystick/no-RC OK",
+      "2": "Both"
+    }
+  },
+  "COM_RC_LOSS_T": {
+    "desc": "RC signal loss timeout before the RC-lost failsafe triggers.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "DEEP_SENSOR_ID": {
+    "desc": "Device ID of the depth/pressure sensor in use.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "DRIVE_DEEP_P": {
+    "desc": "P-gain of the depth-hold (\"drive to target depth\") controller.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "EKF2_REC_RPL": {
+    "desc": "EKF2 replay logging mode (this drone appears to use the legacy INAV estimator, so likely unused/vestigial).",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "FW_AIRSPD_TRIM": {
+    "desc": "Fixed-wing trim airspeed \u2014 vestigial parameter from the shared PX4 codebase, not applicable to a sub.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m/s"
+  },
+  "GF_ACTION": {
+    "desc": "Action to take on geofence breach.",
+    "max": 4,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM",
+    "values": {
+      "0": "None",
+      "1": "Warning",
+      "2": "Hold",
+      "3": "Return",
+      "4": "Terminate"
+    }
+  },
+  "GF_ALTMODE": {
+    "desc": "Geofence altitude reference mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM",
+    "values": {
+      "0": "WGS84",
+      "1": "AMSL"
+    }
+  },
+  "GF_COUNT": {
+    "desc": "Number of geofence polygon points loaded (NaN = none loaded).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "GF_MAX_HOR_DIST": {
+    "desc": "Max horizontal distance from home before geofence breach (NaN = disabled).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "GF_MAX_VER_DIST": {
+    "desc": "Max vertical distance from home before geofence breach (NaN = disabled).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "GF_SOURCE": {
+    "desc": "Geofence source selection (0=global position, 1=GPS directly).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "INAV_DELAY_GPS": {
+    "desc": "Assumed GPS measurement delay compensation.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "INAV_DISAB_MOCAP": {
+    "desc": "Disable use of motion-capture position input.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "INAV_FLOW_DIST_X": {
+    "desc": "Optical flow sensor X offset from vehicle center of gravity.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "INAV_FLOW_DIST_Y": {
+    "desc": "Optical flow sensor Y offset from vehicle center of gravity.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "INAV_FLOW_K": {
+    "desc": "Optical flow scale/gain factor.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_FLOW_Q_MIN": {
+    "desc": "Minimum optical flow quality accepted as valid.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_LAND_DISP": {
+    "desc": "Landing detector: displacement threshold.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "INAV_LAND_T": {
+    "desc": "Landing detector: time threshold.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "INAV_LAND_THR": {
+    "desc": "Landing detector: throttle threshold.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_LIDAR_ERR": {
+    "desc": "Expected rangefinder/lidar (altimeter) measurement error/noise.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "INAV_LIDAR_EST": {
+    "desc": "Enable rangefinder-based altitude estimation.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "INAV_LIDAR_OFF": {
+    "desc": "Rangefinder offset from ground/expected reading at zero altitude.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "INAV_W_ACC_BIAS": {
+    "desc": "Estimator weight: accelerometer bias correction.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_GPS_FLOW": {
+    "desc": "Estimator weight: blending GPS with optical flow velocity.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_MOC_P": {
+    "desc": "Estimator weight: motion-capture position.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_FLOW": {
+    "desc": "Estimator weight: horizontal position/velocity from optical flow.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_GPS_P": {
+    "desc": "Estimator weight: horizontal position from GPS.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_GPS_V": {
+    "desc": "Estimator weight: horizontal velocity from GPS.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_RES_V": {
+    "desc": "Estimator weight: horizontal velocity residual/reset gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_VIS_P": {
+    "desc": "Estimator weight: horizontal position from vision.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_XY_VIS_V": {
+    "desc": "Estimator weight: horizontal velocity from vision.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_Z_BARO": {
+    "desc": "Estimator weight: vertical position from barometer (repurposed for depth/pressure on this sub).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_Z_GPS_P": {
+    "desc": "Estimator weight: vertical position from GPS.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_Z_GPS_V": {
+    "desc": "Estimator weight: vertical velocity from GPS.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_Z_LIDAR": {
+    "desc": "Estimator weight: vertical position from rangefinder.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "INAV_W_Z_VIS_P": {
+    "desc": "Estimator weight: vertical position from vision.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MAV_COMP_ID": {
+    "desc": "MAVLink component ID this system reports itself as.",
+    "max": 255,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "MAV_FWDEXTSP": {
+    "desc": "Forward external setpoint messages over MAVLink.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "MAV_RADIO_ID": {
+    "desc": "ID of a specific radio/telemetry system to bind MAVLink handling to (0 = any/none).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "MAV_SYS_ID": {
+    "desc": "MAVLink system ID (matches \"target_system\" used throughout the cockpit).",
+    "max": 255,
+    "min": 1,
+    "source": "px4",
+    "type": "INT"
+  },
+  "MAV_TEST_PAR": {
+    "desc": "Internal test parameter, no functional effect.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MAV_TYPE": {
+    "desc": "MAVLink MAV_TYPE reported in HEARTBEAT (numeric vehicle type code).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "MAV_USEHILGPS": {
+    "desc": "Use simulated (Hardware-In-the-Loop) GPS instead of a real GPS receiver.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "MC_ACRO_P_MAX": {
+    "desc": "Max pitch rate commanded by the stick in ACRO/manual-rate mode.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_ACRO_R_MAX": {
+    "desc": "Max roll rate commanded by the stick in ACRO/manual-rate mode.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_ACRO_Y_MAX": {
+    "desc": "Max yaw rate commanded by the stick in ACRO/manual-rate mode.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_PITCHRATE_D": {
+    "desc": "Pitch rate controller D gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_PITCHRATE_FF": {
+    "desc": "Pitch rate controller feed-forward gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_PITCHRATE_I": {
+    "desc": "Pitch rate controller I gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_PITCHRATE_MAX": {
+    "desc": "Max commanded pitch rate.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_PITCHRATE_P": {
+    "desc": "Pitch rate controller P gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_PITCH_P": {
+    "desc": "Pitch angle controller P gain (outer loop).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_PITCH_TC": {
+    "desc": "Pitch angle controller time constant.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "MC_RATT_TH": {
+    "desc": "Threshold between manual rate mode and attitude-stabilized mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLLRATE_D": {
+    "desc": "Roll rate controller D gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLLRATE_FF": {
+    "desc": "Roll rate controller feed-forward gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLLRATE_I": {
+    "desc": "Roll rate controller I gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLLRATE_MAX": {
+    "desc": "Max commanded roll rate.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_ROLLRATE_P": {
+    "desc": "Roll rate controller P gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLL_P": {
+    "desc": "Roll angle controller P gain (outer loop). 0.0 here likely means roll-hold is disabled on this hull.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_ROLL_TC": {
+    "desc": "Roll angle controller time constant.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "MC_YAWRATE_D": {
+    "desc": "Yaw rate controller D gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_YAWRATE_FF": {
+    "desc": "Yaw rate controller feed-forward gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_YAWRATE_I": {
+    "desc": "Yaw rate controller I gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_YAWRATE_MAX": {
+    "desc": "Max commanded yaw rate.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_YAWRATE_P": {
+    "desc": "Yaw rate controller P gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_YAWRAUTO_MAX": {
+    "desc": "Max yaw rate during autonomous/auto-heading control.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg/s"
+  },
+  "MC_YAW_FF": {
+    "desc": "Yaw angle controller feed-forward gain.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MC_YAW_P": {
+    "desc": "Yaw angle controller P gain (outer loop).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "MIS_ALTMODE": {
+    "desc": "Mission altitude reference mode.",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "MIS_DIST_1WP": {
+    "desc": "Max allowed distance to the first waypoint (sanity check).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "MIS_LTRMIN_ALT": {
+    "desc": "Minimum loiter altitude used during auto missions.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "MIS_ONBOARD_EN": {
+    "desc": "Enable onboard (companion computer) mission control.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "MIS_TAKEOFF_ALT": {
+    "desc": "Default takeoff altitude for auto missions.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "MIS_YAWMODE": {
+    "desc": "Mission yaw behavior mode.",
+    "max": 4,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "MIS_YAW_ERR": {
+    "desc": "Max yaw error accepted before considering a waypoint yaw achieved.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "MIS_YAW_TMT": {
+    "desc": "Max time allowed to reach the desired mission yaw; -1 disables the timeout.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "MPC_XY_CRUISE": {
+    "desc": "Cruise (auto mode) horizontal speed setpoint.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m/s"
+  },
+  "NAV_ACC_RAD": {
+    "desc": "Acceptance radius for waypoints (distance considered \"reached\").",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "NAV_AH_ALT": {
+    "desc": "Altitude used for the \"safe/rally\" auto home point.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "NAV_AH_LAT": {
+    "desc": "Latitude of the \"safe/rally\" auto home point (irrelevant underwater \u2014 no GPS).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "NAV_AH_LON": {
+    "desc": "Longitude of the \"safe/rally\" auto home point (irrelevant underwater \u2014 no GPS).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "NAV_DLL_ACT": {
+    "desc": "Action on datalink loss.",
+    "max": 3,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "NAV_DLL_AH_T": {
+    "desc": "Time before datalink-loss failsafe switches to the auto/safe home point.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "NAV_DLL_CHSK": {
+    "desc": "Datalink-loss: use \"critical\" home point instead of standard home.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "NAV_DLL_CH_ALT": {
+    "desc": "Altitude of the critical/emergency home point for datalink loss.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "NAV_DLL_CH_LAT": {
+    "desc": "Latitude of the critical/emergency home point for datalink loss.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "NAV_DLL_CH_LON": {
+    "desc": "Longitude of the critical/emergency home point for datalink loss.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "NAV_DLL_CH_T": {
+    "desc": "Time before switching to the critical/emergency home point.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "NAV_DLL_N": {
+    "desc": "Number of datalink-loss cycles/attempts before final action.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "NAV_GPSF_LT": {
+    "desc": "GPS-failure failsafe: loiter time before further action.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "NAV_GPSF_P": {
+    "desc": "GPS-failure failsafe: manual throttle/pitch used during descent.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "NAV_GPSF_R": {
+    "desc": "GPS-failure failsafe: roll angle used during the fallback maneuver.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "NAV_GPSF_TR": {
+    "desc": "GPS-failure failsafe: throttle used during the fallback maneuver.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "NAV_LOITER_RAD": {
+    "desc": "Loiter/circle radius used in auto modes.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "NAV_RCL_ACT": {
+    "desc": "Action on RC signal loss.",
+    "max": 6,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "NAV_RCL_LT": {
+    "desc": "Time before RC-loss failsafe switches to the auto/safe home point.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "PARK_DEEP_I": {
+    "desc": "I-gain of the depth-hold (\"park at depth\") controller.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PARK_DEEP_P": {
+    "desc": "P-gain of the depth-hold (\"park at depth\") controller.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PARK_DEEP_THRUST": {
+    "desc": "Thrust limit/authority allotted to the depth-hold (\"park\") controller.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PV_BOARD_ID": {
+    "desc": "Identifier of the specific PV flight-controller board/hardware revision.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_DEEPTEST": {
+    "desc": "Depth-sensor self-test flag/result.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_INTOWATER": {
+    "desc": "Water-immersion/leak sensor state or threshold (config-side twin of PV_V_INTOWATER).",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_SD_SIZE": {
+    "desc": "Detected SD card size (GB) in the camera/logging unit.",
+    "source": "guess",
+    "type": "FLOAT",
+    "unit": "GB"
+  },
+  "PV_SPEEDADJUST": {
+    "desc": "Global speed-scaling factor applied on top of the L/M/H gear selection.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PV_THRUST_D": {
+    "desc": "Thrust/motor controller D gain.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PV_THRUST_I": {
+    "desc": "Thrust/motor controller I gain.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PV_THRUST_P": {
+    "desc": "Thrust/motor controller P gain.",
+    "source": "guess",
+    "type": "FLOAT"
+  },
+  "PV_VERSION": {
+    "desc": "PowerVision firmware/config version number.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESC1COUNT": {
+    "desc": "Usage/error counter reported by ESC #1 (thruster 1 motor controller).",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESC2COUNT": {
+    "desc": "Usage/error counter reported by ESC #2 (thruster 2 motor controller).",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESC3COUNT": {
+    "desc": "Usage/error counter reported by ESC #3 (thruster 3 motor controller).",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESCVER1": {
+    "desc": "Firmware version reported by ESC #1.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESCVER2": {
+    "desc": "Firmware version reported by ESC #2.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_ESCVER3": {
+    "desc": "Firmware version reported by ESC #3.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_FISHING": {
+    "desc": "Fish-finder / fishing-mode feature toggle.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_V_INTOWATER": {
+    "desc": "Water-immersion/leak sensor live state (0=dry, 1=water detected).",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_V_KEY_FLAG": {
+    "desc": "Activation flag checked at startup \u2014 confirmed this session as the account-activation unlock bit.",
+    "max": 1,
+    "min": 0,
+    "source": "confirmed",
+    "type": "BOOL"
+  },
+  "PV_V_LASTARM": {
+    "desc": "Timestamp/counter of the last successful arm event.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_LOGCOUNT": {
+    "desc": "Number of log files stored / log session counter.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_PARAMVER": {
+    "desc": "Parameter set/schema version (used to detect parameter migrations across firmware updates).",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_RC_MODE": {
+    "desc": "RC stick-mode configuration (Mode 1-4 stick layout selection, confirmed reading integer 4 this session).",
+    "max": 4,
+    "min": 1,
+    "source": "confirmed",
+    "type": "INT"
+  },
+  "PV_V_RC_UPDATE": {
+    "desc": "Flag/counter indicating an RC firmware or binding update event.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_V_SD_FMT": {
+    "desc": "SD card format status/request flag for the camera unit.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PV_V_STARTCOUNT": {
+    "desc": "Total power-on/boot cycle counter.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_STAT": {
+    "desc": "General device status/error bitmask.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_V_VER": {
+    "desc": "Overall system/firmware version number.",
+    "source": "guess",
+    "type": "INT"
+  },
+  "PV_YAW_DELAY": {
+    "desc": "Delay applied to yaw response (seen in STATUSTEXT as \"pv_yaw_delay\"), likely damping for yaw thruster response.",
+    "source": "guess",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "PV_YIELDTEST": {
+    "desc": "Manufacturing/production yield self-test flag.",
+    "max": 1,
+    "min": 0,
+    "source": "guess",
+    "type": "BOOL"
+  },
+  "PWM_AUX_DISARMED": {
+    "desc": "PWM output value on AUX channels while disarmed.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "PWM_AUX_MAX": {
+    "desc": "Max PWM output value on AUX channels.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "PWM_AUX_MIN": {
+    "desc": "Min PWM output value on AUX channels.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "PWM_AUX_REV1": {
+    "desc": "Reverse direction of AUX PWM output channel 1.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_AUX_REV2": {
+    "desc": "Reverse direction of AUX PWM output channel 2.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_AUX_REV3": {
+    "desc": "Reverse direction of AUX PWM output channel 3.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_AUX_REV4": {
+    "desc": "Reverse direction of AUX PWM output channel 4.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_AUX_REV5": {
+    "desc": "Reverse direction of AUX PWM output channel 5.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_AUX_REV6": {
+    "desc": "Reverse direction of AUX PWM output channel 6.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "PWM_DISARMED": {
+    "desc": "PWM output value on main outputs while disarmed.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "PWM_MAX": {
+    "desc": "Max PWM output value on main outputs.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "PWM_MIN": {
+    "desc": "Min PWM output value on main outputs.",
+    "source": "px4",
+    "type": "INT",
+    "unit": "us"
+  },
+  "RC10_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 10.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC10_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 10.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC10_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 10.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC10_REV": {
+    "desc": "Reverse/invert RC input channel 10 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC10_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 10.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC11_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 11.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC11_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 11.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC11_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 11.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC11_REV": {
+    "desc": "Reverse/invert RC input channel 11 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC11_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 11.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC12_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 12.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC12_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 12.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC12_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 12.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC12_REV": {
+    "desc": "Reverse/invert RC input channel 12 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC12_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 12.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC13_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 13.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC13_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 13.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC13_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 13.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC13_REV": {
+    "desc": "Reverse/invert RC input channel 13 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC13_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 13.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC14_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 14.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC14_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 14.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC14_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 14.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC14_REV": {
+    "desc": "Reverse/invert RC input channel 14 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC14_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 14.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC15_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 15.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC15_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 15.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC15_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 15.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC15_REV": {
+    "desc": "Reverse/invert RC input channel 15 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC15_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 15.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC16_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 16.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC16_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 16.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC16_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 16.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC16_REV": {
+    "desc": "Reverse/invert RC input channel 16 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC16_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 16.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC17_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 17.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC17_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 17.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC17_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 17.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC17_REV": {
+    "desc": "Reverse/invert RC input channel 17 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC17_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 17.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC18_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 18.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC18_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 18.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC18_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 18.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC18_REV": {
+    "desc": "Reverse/invert RC input channel 18 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC18_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 18.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC1_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 1.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC1_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 1.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC1_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 1.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC1_REV": {
+    "desc": "Reverse/invert RC input channel 1 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC1_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 1.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC2_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 2.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC2_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 2.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC2_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 2.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC2_REV": {
+    "desc": "Reverse/invert RC input channel 2 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC2_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 2.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC3_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 3.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC3_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 3.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC3_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 3.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC3_REV": {
+    "desc": "Reverse/invert RC input channel 3 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC3_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 3.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC4_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 4.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC4_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 4.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC4_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 4.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC4_REV": {
+    "desc": "Reverse/invert RC input channel 4 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC4_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 4.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC5_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 5.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC5_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 5.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC5_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 5.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC5_REV": {
+    "desc": "Reverse/invert RC input channel 5 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC5_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 5.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC6_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 6.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC6_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 6.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC6_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 6.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC6_REV": {
+    "desc": "Reverse/invert RC input channel 6 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC6_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 6.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC7_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 7.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC7_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 7.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC7_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 7.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC7_REV": {
+    "desc": "Reverse/invert RC input channel 7 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC7_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 7.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC8_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 8.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC8_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 8.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC8_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 8.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC8_REV": {
+    "desc": "Reverse/invert RC input channel 8 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC8_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 8.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC9_DZ": {
+    "desc": "Dead-zone around center/trim for RC input channel 9.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC9_MAX": {
+    "desc": "Max calibrated PWM value for RC input channel 9.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC9_MIN": {
+    "desc": "Min calibrated PWM value for RC input channel 9.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC9_REV": {
+    "desc": "Reverse/invert RC input channel 9 (1=normal, -1=reversed).",
+    "source": "px4",
+    "type": "FLOAT",
+    "values": {
+      "-1": "Reversed",
+      "1": "Normal"
+    }
+  },
+  "RC9_TRIM": {
+    "desc": "Center/trim PWM value for RC input channel 9.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "us"
+  },
+  "RC_ACRO_TH": {
+    "desc": "RC switch threshold for engaging ACRO (manual rate) mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_ASSIST_TH": {
+    "desc": "RC switch threshold for engaging assisted flight mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_AUTO_TH": {
+    "desc": "RC switch threshold for engaging auto/mission mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_CHAN_CNT": {
+    "desc": "Detected number of active RC input channels.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_DSM_BIND": {
+    "desc": "Spektrum DSM satellite receiver bind command trigger (NaN = idle).",
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_FAILS_THR": {
+    "desc": "RC failsafe throttle threshold used to detect signal loss.",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_KILLSWITCH_TH": {
+    "desc": "RC switch threshold for engaging the kill switch (immediate motor stop).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_LOITER_TH": {
+    "desc": "RC switch threshold for engaging loiter mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_MAP_ACRO_SW": {
+    "desc": "RC channel mapped to the ACRO mode switch (0 = unassigned).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_AUX1": {
+    "desc": "RC channel mapped to AUX passthrough output 1.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_AUX2": {
+    "desc": "RC channel mapped to AUX passthrough output 2.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_AUX3": {
+    "desc": "RC channel mapped to AUX passthrough output 3.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_AUX4": {
+    "desc": "RC channel mapped to AUX passthrough output 4.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_AUX5": {
+    "desc": "RC channel mapped to AUX passthrough output 5.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_FAILSAFE": {
+    "desc": "RC channel used to explicitly signal failsafe from the transmitter.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_FLAPS": {
+    "desc": "RC channel mapped to flaps (fixed-wing leftover, unused on this sub).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_FLTMODE": {
+    "desc": "RC channel mapped to the flight-mode selector switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_KILL_SW": {
+    "desc": "RC channel mapped to the kill switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_LOITER_SW": {
+    "desc": "RC channel mapped to the loiter-mode switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_MODE_SW": {
+    "desc": "RC channel mapped to the nav mode switch \u2014 likely the button whose state we surfaced as HEARTBEAT.base_mode bit 0 (Stable Image/Depth-Fixed).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_OFFB_SW": {
+    "desc": "RC channel mapped to the offboard-control-enable switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_PARAM1": {
+    "desc": "RC channel mapped to tunable parameter 1 (in-flight parameter tuning knob).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_PARAM2": {
+    "desc": "RC channel mapped to tunable parameter 2 (in-flight parameter tuning knob).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_PARAM3": {
+    "desc": "RC channel mapped to tunable parameter 3 (in-flight parameter tuning knob).",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_PITCH": {
+    "desc": "RC channel mapped to pitch stick input.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_POSCTL_SW": {
+    "desc": "RC channel mapped to the position-control-mode switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_RATT_SW": {
+    "desc": "RC channel mapped to the rate/attitude-mode switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_RETURN_SW": {
+    "desc": "RC channel mapped to the return-to-launch switch.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_ROLL": {
+    "desc": "RC channel mapped to roll stick input.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_THROTTLE": {
+    "desc": "RC channel mapped to throttle stick input.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_MAP_YAW": {
+    "desc": "RC channel mapped to yaw stick input.",
+    "max": 18,
+    "min": 0,
+    "source": "px4",
+    "type": "INT"
+  },
+  "RC_OFFB_TH": {
+    "desc": "RC switch threshold for engaging offboard control mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_POSCTL_TH": {
+    "desc": "RC switch threshold for engaging position-control mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_RATT_TH": {
+    "desc": "RC switch threshold for engaging rate-control (manual) mode.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_RETURN_TH": {
+    "desc": "RC switch threshold for engaging return-to-launch.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "RC_TH_USER": {
+    "desc": "User-selectable throttle curve/threshold mode.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "RTL_DESCEND_ALT": {
+    "desc": "Altitude at which RTL switches from cruise to final descent.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "RTL_LAND_DELAY": {
+    "desc": "Delay before landing once RTL reaches home; -1 disables auto-land (loiter instead).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "s"
+  },
+  "RTL_MIN_DIST": {
+    "desc": "Minimum distance from home below which RTL climbs directly instead of cruising.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "RTL_RETURN_ALT": {
+    "desc": "Altitude used during the RTL cruise/return leg.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "m"
+  },
+  "SDLOG_EXT": {
+    "desc": "Extended/verbose logging profile toggle.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "SDLOG_GPSTIME": {
+    "desc": "Wait for a valid GPS time before starting a new log file.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "SDLOG_PRIO_BOOST": {
+    "desc": "Priority boost given to the logging thread.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "SDLOG_RATE": {
+    "desc": "Maximum onboard logging rate.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "Hz"
+  },
+  "SDLOG_UTC_OFFSET": {
+    "desc": "UTC time offset applied to log file timestamps.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "min"
+  },
+  "SENS_BARO_QNH": {
+    "desc": "Barometer sea-level pressure reference (irrelevant underwater; fixed-wing/altitude leftover).",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "hPa"
+  },
+  "SENS_BOARD_ROT": {
+    "desc": "Rotation of the flight-controller board relative to the vehicle body/hull.",
+    "max": 35,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "SENS_BOARD_X_OFF": {
+    "desc": "Board mounting X-axis offset correction, in degrees.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "SENS_BOARD_Y_OFF": {
+    "desc": "Board mounting Y-axis offset correction, in degrees.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "SENS_BOARD_Z_OFF": {
+    "desc": "Board mounting Z-axis offset correction, in degrees.",
+    "source": "px4",
+    "type": "FLOAT",
+    "unit": "deg"
+  },
+  "SENS_DPRES_ANSC": {
+    "desc": "Differential pressure sensor analog scale (airspeed sensor, fixed-wing leftover).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "SENS_DPRES_OFF": {
+    "desc": "Differential pressure sensor offset (airspeed sensor, fixed-wing leftover).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "SYS_AUTOCONFIG": {
+    "desc": "Trigger automatic reset of all parameters to airframe defaults.",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "SYS_AUTOSTART": {
+    "desc": "Airframe/vehicle configuration preset ID applied at first boot.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "SYS_MC_EST_GROUP": {
+    "desc": "Selected position/attitude estimator group (0 = legacy INAV/LPE estimator, matching the INAV_* params seen here).",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "SYS_PARAM_VER": {
+    "desc": "Parameter definition schema version, used to detect/convert outdated parameter sets.",
+    "source": "px4",
+    "type": "INT"
+  },
+  "SYS_RESTART_TYPE": {
+    "desc": "Type of the most recent restart (0=normal power-cycle, 1=in-air, 2=data-loss).",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "VT_NAV_FORCE_VT": {
+    "desc": "VTOL: force multicopter mode during RTL/mission regardless of transition state (vestigial, VTOL-only feature).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "VT_OPT_RECOV_EN": {
+    "desc": "VTOL: enable optimal recovery during back-transition (vestigial, VTOL-only feature).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "VT_TYPE": {
+    "desc": "VTOL airframe type (vestigial, VTOL-only feature \u2014 this sub is neither a plane nor VTOL).",
+    "max": 2,
+    "min": 0,
+    "source": "px4",
+    "type": "ENUM"
+  },
+  "VT_WV_LND_EN": {
+    "desc": "VTOL: enable wind-vane weathervaning during landing (vestigial, VTOL-only feature).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "VT_WV_LTR_EN": {
+    "desc": "VTOL: enable wind-vane weathervaning during loiter (vestigial, VTOL-only feature).",
+    "max": 1,
+    "min": 0,
+    "source": "px4",
+    "type": "BOOL"
+  },
+  "VT_WV_YAWR_SCL": {
+    "desc": "VTOL: weathervaning yaw rate scale (vestigial, VTOL-only feature).",
+    "source": "px4",
+    "type": "FLOAT"
+  },
+  "_HASH_CHECK": {
+    "desc": "Internal parameter-file integrity hash used by PX4 to detect out-of-sync parameter definitions; not user-meaningful.",
+    "source": "px4",
+    "type": "FLOAT"
+  }
+}

@@ -436,6 +436,19 @@ def index():
 def sonar_ui():
     return render_template('sonar.html')
 
+@app.route('/param_dictionary.json')
+def param_dictionary():
+    """Serves the static parameter interpretation dictionary (name -> desc/
+    type/range/unit), loaded from config/param_dictionary.json. Kept as a
+    separate flat file so it can be edited/extended without touching code."""
+    import os
+    path = os.path.join(os.path.dirname(__file__), 'config', 'param_dictionary.json')
+    try:
+        with open(path, 'r') as f:
+            return jsonify(json.load(f))
+    except FileNotFoundError:
+        return jsonify({})
+
 @app.route('/state')
 def get_state():
     return jsonify({k: v for k, v in state.items() if k != 'params'})

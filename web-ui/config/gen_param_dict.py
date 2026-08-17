@@ -335,6 +335,18 @@ add('VT_WV_YAWR_SCL', 'VTOL: weathervaning yaw rate scale (vestigial, VTOL-only 
 
 add('_HASH_CHECK', 'Internal parameter-file integrity hash used by PX4 to detect out-of-sync parameter definitions; not user-meaningful.', 'FLOAT')
 
+# Preserve any 'default' values (captured from the live drone via
+# dump_live_params.py / Playwright + merge) already present in an existing
+# param_dictionary.json, so re-running this generator doesn't wipe them out.
+try:
+    with open('param_dictionary.json') as f:
+        existing = json.load(f)
+    for name, entry in existing.items():
+        if name in d and 'default' in entry:
+            d[name]['default'] = entry['default']
+except FileNotFoundError:
+    pass
+
 with open('param_dictionary.json', 'w') as f:
     json.dump(d, f, indent=2, sort_keys=True)
 print(f'Wrote {len(d)} entries to param_dictionary.json')

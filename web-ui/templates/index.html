@@ -19,12 +19,12 @@
 
   .grid {
     display: grid;
-    grid-template-columns: 260px 1fr 260px;
+    grid-template-columns: 260px 1fr;
     grid-template-rows: auto auto auto auto;
     gap: 12px; padding: 12px; height: calc(100vh - 54px);
   }
-  #params-panel { grid-column: 1 / 4; grid-row: 3; max-height: 260px; }
-  #log-card { grid-column: 1 / 4; grid-row: 4; display: flex; flex-direction: column; }
+  #params-panel { grid-column: 2; grid-row: 3; max-height: none; }
+  #log-card { grid-column: 2; grid-row: 4; display: flex; flex-direction: column; }
 
   .card {
     background: #0d1525; border: 1px solid #1e3a5f;
@@ -130,7 +130,7 @@
   .jm-dir.right { right: -26px; top: 50%; transform: translateY(-50%); }
   .jm-dir.jm-unused { color: #37475f; opacity: .5; }
 
-  #params-panel { overflow-y: auto; }
+  #params-panel { }
   .param-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
   .param-name { flex: 1; font-size: .75rem; color: #607d9f; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .param-input { width: 80px; background: #0a0e1a; border: 1px solid #1e3a5f;
@@ -148,7 +148,7 @@
   .bat-bar { height: 100%; background: #4caf50; border-radius: 4px; transition: width .5s, background .5s; }
 
   #log { background: #050810; border: 1px solid #1e3a5f; border-radius: 6px;
-         padding: 8px; height: 100%; min-height: 70px; overflow-y: auto; font-size: .72rem;
+         padding: 8px; height: 400px; max-height: 400px; overflow-y: auto; font-size: .72rem;
          font-family: monospace; color: #607d9f; }
   .log-line { margin-bottom: 2px; }
   .log-line.ok { color: #4caf50; }

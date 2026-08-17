@@ -20,9 +20,10 @@
   .grid {
     display: grid;
     grid-template-columns: 260px 1fr 260px;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     gap: 12px; padding: 12px; height: calc(100vh - 54px);
   }
+  #log-card { grid-column: 1 / 4; grid-row: 3; display: flex; flex-direction: column; }
 
   .card {
     background: #0d1525; border: 1px solid #1e3a5f;
@@ -82,6 +83,15 @@
   .speed-btn.active { background: #4fc3f7; color: #05131f; border-color: #4fc3f7; }
   .speed-btn.active .speed-detail { color: #05131f; }
 
+  #nav-mode-selector { display: flex; flex-direction: column; align-items: center; }
+  #nav-mode-btn-col { display: flex; flex-direction: column; gap: 8px; }
+  .nav-mode-btn { flex: 1; display: flex; flex-direction: column; align-items: center;
+               gap: 2px; padding: 8px 10px; cursor: pointer; }
+  .nav-mode-icon { font-size: 1.1rem; }
+  .nav-mode-detail { font-size: .65rem; color: #9fb3cc; white-space: nowrap; }
+  .nav-mode-btn.active { background: #4fc3f7; color: #05131f; border-color: #4fc3f7; }
+  .nav-mode-btn.active .nav-mode-detail { color: #05131f; }
+
   select { background: #0a0e1a; color: #e0e8ff; border: 1px solid #1e3a5f;
            border-radius: 6px; padding: 6px 10px; font-size: .85rem; }
 
@@ -93,28 +103,30 @@
   .joystick-dot { width: 24px; height: 24px; background: #4fc3f7; border-radius: 50%;
                   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
                   transition: none; pointer-events: none; }
-  .throttle-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  #throttle-slider { writing-mode: vertical-lr; direction: rtl;
-                     width: 30px; height: 100px; cursor: pointer;
-                     accent-color: #4fc3f7; }
+
+  /* Control row: joystick area on the left, mode selector + diagram on the right */
+  #control-row { display: flex; gap: 18px; align-items: flex-start; }
+  #control-row > #joystick-area { flex: 1; }
+  #joystick-mode-panel { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;
+                          gap: 8px; padding-left: 14px; border-left: 1px solid #1e3a5f; }
 
   /* Joystick mode reference (manual p.15 style) */
-  #joystick-mode-bar { display: flex; align-items: center; justify-content: center;
-                        gap: 8px; margin-bottom: 10px; }
-  #joystick-mode-bar label { font-size: .75rem; color: #607d9f; }
-  .jm-diagram { display: flex; gap: 26px; justify-content: center; margin-bottom: 14px; }
+  #joystick-mode-bar { display: flex; flex-direction: column; align-items: center;
+                        gap: 4px; }
+  #joystick-mode-bar label { font-size: .7rem; color: #607d9f; text-align: center; }
+  .jm-diagram { display: flex; gap: 16px; justify-content: center; }
   .jm-stick { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .jm-stick-title { font-size: .7rem; color: #9fb3cc; font-weight: bold; }
-  .jm-cross { position: relative; width: 96px; height: 96px; }
+  .jm-cross { position: relative; width: 80px; height: 80px; }
   .jm-center { position: absolute; top: 50%; left: 50%; width: 22px; height: 22px;
                background: #4fc3f7; border-radius: 50%; transform: translate(-50%,-50%); opacity: .5; }
   .jm-dir { position: absolute; display: flex; flex-direction: column; align-items: center;
-            gap: 2px; color: #4fc3f7; font-size: .65rem; width: 60px; text-align: center; }
-  .jm-dir .jm-arrow { font-size: 1rem; line-height: 1; }
-  .jm-dir.up    { top: -6px;  left: 50%; transform: translateX(-50%); }
-  .jm-dir.down  { bottom: -6px; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
-  .jm-dir.left  { left: -34px; top: 50%; transform: translateY(-50%); }
-  .jm-dir.right { right: -34px; top: 50%; transform: translateY(-50%); }
+            gap: 2px; color: #4fc3f7; font-size: .6rem; width: 48px; text-align: center; }
+  .jm-dir .jm-arrow { font-size: .9rem; line-height: 1; }
+  .jm-dir.up    { top: -4px;  left: 50%; transform: translateX(-50%); }
+  .jm-dir.down  { bottom: -4px; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
+  .jm-dir.left  { left: -26px; top: 50%; transform: translateY(-50%); }
+  .jm-dir.right { right: -26px; top: 50%; transform: translateY(-50%); }
   .jm-dir.jm-unused { color: #37475f; opacity: .5; }
 
   #params-panel { grid-column: 3; grid-row: 1 / 3; overflow-y: auto; }
@@ -133,12 +145,19 @@
   .bat-bar { height: 100%; background: #4caf50; border-radius: 4px; transition: width .5s, background .5s; }
 
   #log { background: #050810; border: 1px solid #1e3a5f; border-radius: 6px;
-         padding: 8px; height: 80px; overflow-y: auto; font-size: .72rem;
-         font-family: monospace; color: #607d9f; margin-top: 8px; }
+         padding: 8px; height: 100%; min-height: 70px; overflow-y: auto; font-size: .72rem;
+         font-family: monospace; color: #607d9f; }
   .log-line { margin-bottom: 2px; }
   .log-line.ok { color: #4caf50; }
   .log-line.err { color: #f44336; }
   .log-line.info { color: #4fc3f7; }
+  .log-line.hidden { display: none; }
+  #log-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  #log-toolbar input[type=text] { background: #0a0e1a; color: #e0e8ff; border: 1px solid #1e3a5f;
+         border-radius: 6px; padding: 5px 8px; font-size: .75rem; flex: 1; min-width: 140px; }
+  #log-toolbar .btn { padding: 5px 10px; font-size: .72rem; }
+  #log-toolbar label { font-size: .72rem; color: #9fb3cc; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  #log-count { font-size: .7rem; color: #607d9f; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -203,6 +222,35 @@
       <small style="color:#607d9f;font-size:.7rem">Sets the FCU activation flag (PV_V_KEY_FLAG). Required once to unlock arming on a fresh/reset FCU.</small>
     </div>
 
+    <div class="card">
+      <h2>Experimental</h2>
+      <div class="btn-row">
+        <button class="btn success" id="arm-btn" onclick="toggleArm()">ARM</button>
+        <button class="btn danger" onclick="send('/arm','POST',{arm:false})">DISARM</button>
+      </div>
+
+      <small style="color:#607d9f;font-size:.75rem;display:block;margin-top:8px;line-height:1.4;">
+        These MAVLink ARM/DISARM buttons are unreliable on this FCU (see below for the real physical
+        unlock/lock procedure that actually controls the propellers):
+      </small>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;align-items:center;">
+        <img src="{{ url_for('static', filename='manual/powerray_unlock.jpg') }}" alt="Unlock diagram (thumbwheel left)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
+        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
+          <b>Unlocking:</b> first dial the left thumbwheel to the very left, then press the camera/Fish Finder
+          interface switch button until 1 second later, there's vibration to unlock. After unlocking,
+          the joystick can control the propeller rotation, battery level.
+        </small>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;align-items:center;">
+        <img src="{{ url_for('static', filename='manual/powerray_lock.jpg') }}" alt="Lock diagram (thumbwheel right)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
+        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
+          <b>Locking:</b> first dial the left thumbwheel to the very right, then press the camera/Fish Finder
+          interface switch button until 1 second later, there's vibration to lock. After locking, if
+          controlling the joystick, the propeller will not be responding.
+        </small>
+      </div>
+    </div>
+
   </div>
 
   <!-- Center: Camera + Controls -->
@@ -238,109 +286,89 @@
     <div class="card">
       <h2>Control</h2>
 
-      <div id="joystick-mode-bar">
-        <label for="joystick-mode-sel">Remote control mode (reference, manual p.15):</label>
-        <select id="joystick-mode-sel" onchange="updateJoystickModeRef()">
-          <option value="1">MODE 1</option>
-          <option value="2">MODE 2</option>
-          <option value="3">MODE 3</option>
-          <option value="4" selected>MODE 4 (default)</option>
-        </select>
-      </div>
-      <div class="jm-diagram">
-        <div class="jm-stick">
-          <div class="jm-stick-title">Left joystick</div>
-          <div class="jm-cross" id="jm-cross-left">
-            <div class="jm-center"></div>
-            <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
-            <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
-            <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
-            <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
+      <div id="control-row">
+        <div id="joystick-area">
+          <div id="nav-mode-selector">
+            <div class="speed-label">Nav mode</div>
+            <div id="nav-mode-btn-col">
+              <div class="btn nav-mode-btn" id="nav-mode-btn-STABLE_IMAGE" onclick="setNavMode('STABLE_IMAGE')">
+                <span class="nav-mode-icon">&#x1F4F7;</span><span class="nav-mode-detail">Stable Image</span>
+              </div>
+              <div class="btn nav-mode-btn" id="nav-mode-btn-DEPTH_FIXED" onclick="setNavMode('DEPTH_FIXED')">
+                <span class="nav-mode-icon">&#x2195;</span><span class="nav-mode-detail">Depth-Fixed</span>
+              </div>
+            </div>
+          </div>
+          <div id="speed-selector">
+            <div class="speed-label">Speed gear</div>
+            <div id="speed-btn-col">
+              <div class="btn speed-btn" id="speed-btn-H">
+                <span class="speed-gear">H</span><span class="speed-detail">2&nbsp;m/s &middot; 4&nbsp;kt</span>
+              </div>
+              <div class="btn speed-btn" id="speed-btn-M">
+                <span class="speed-gear">M</span><span class="speed-detail">1&nbsp;m/s &middot; 2&nbsp;kt</span>
+              </div>
+              <div class="btn speed-btn" id="speed-btn-L">
+                <span class="speed-gear">L</span><span class="speed-detail">0.5&nbsp;m/s &middot; 1&nbsp;kt</span>
+              </div>
+            </div>
+          </div>
+          <div class="joystick-wrap">
+            <span class="joystick-label" id="js-left-title">UP / DOWN</span>
+            <div class="joystick" id="js-left">
+              <div class="joystick-dot" id="js-left-dot"></div>
+            </div>
+            <span class="joystick-label" id="js-left-val">Z:0</span>
+          </div>
+          <div class="joystick-wrap">
+            <span class="joystick-label" id="js-right-title">FORWARD / BACKWARD + TURN</span>
+            <div class="joystick" id="js-right">
+              <div class="joystick-dot" id="js-right-dot"></div>
+            </div>
+            <span class="joystick-label" id="js-right-val">P:0 Y:0</span>
           </div>
         </div>
-        <div class="jm-stick">
-          <div class="jm-stick-title">Right joystick</div>
-          <div class="jm-cross" id="jm-cross-right">
-            <div class="jm-center"></div>
-            <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
-            <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
-            <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
-            <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
-          </div>
-        </div>
-      </div>
 
-      <div id="joystick-area">
-        <div id="speed-selector">
-          <div class="speed-label">Speed gear</div>
-          <div id="speed-btn-col">
-            <div class="btn speed-btn" id="speed-btn-H">
-              <span class="speed-gear">H</span><span class="speed-detail">2&nbsp;m/s &middot; 4&nbsp;kt</span>
+        <div id="joystick-mode-panel">
+          <div id="joystick-mode-bar">
+            <label for="joystick-mode-sel">RC mode (reference, manual p.15):</label>
+            <select id="joystick-mode-sel" onchange="updateJoystickModeRef()">
+              <option value="1">MODE 1</option>
+              <option value="2">MODE 2</option>
+              <option value="3">MODE 3</option>
+              <option value="4" selected>MODE 4 (default)</option>
+            </select>
+          </div>
+          <div class="jm-diagram">
+            <div class="jm-stick">
+              <div class="jm-stick-title">Left joystick</div>
+              <div class="jm-cross" id="jm-cross-left">
+                <div class="jm-center"></div>
+                <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
+                <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
+                <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
+                <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
+              </div>
             </div>
-            <div class="btn speed-btn" id="speed-btn-M">
-              <span class="speed-gear">M</span><span class="speed-detail">1&nbsp;m/s &middot; 2&nbsp;kt</span>
-            </div>
-            <div class="btn speed-btn" id="speed-btn-L">
-              <span class="speed-gear">L</span><span class="speed-detail">0.5&nbsp;m/s &middot; 1&nbsp;kt</span>
+            <div class="jm-stick">
+              <div class="jm-stick-title">Right joystick</div>
+              <div class="jm-cross" id="jm-cross-right">
+                <div class="jm-center"></div>
+                <div class="jm-dir up"><span class="jm-arrow">&#9650;</span><span class="jm-txt"></span></div>
+                <div class="jm-dir down"><span class="jm-txt"></span><span class="jm-arrow">&#9660;</span></div>
+                <div class="jm-dir left"><span class="jm-arrow">&#9668;</span><span class="jm-txt"></span></div>
+                <div class="jm-dir right"><span class="jm-arrow">&#9658;</span><span class="jm-txt"></span></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="joystick-wrap">
-          <span class="joystick-label">PITCH / ROLL</span>
-          <div class="joystick" id="js-left">
-            <div class="joystick-dot" id="js-left-dot"></div>
-          </div>
-          <span class="joystick-label" id="js-left-val">P:0 R:0</span>
-        </div>
-        <div class="throttle-wrap">
-          <span class="joystick-label">THR</span>
-          <input type="range" id="throttle-slider" min="0" max="1000" value="500" oninput="updateThrottle(this.value)">
-          <span class="joystick-label" id="thr-val">500</span>
-        </div>
-        <div class="joystick-wrap">
-          <span class="joystick-label">YAW</span>
-          <div class="joystick" id="js-right" style="cursor:ew-resize;">
-            <div class="joystick-dot" id="js-right-dot"></div>
-          </div>
-          <span class="joystick-label" id="js-right-val">Y:0</span>
         </div>
       </div>
-
-      <div id="log"></div>
 
       <div class="btn-row">
         <button class="btn danger" id="emergency-surface-btn" onclick="emergencySurface()"
                 style="width:100%;font-weight:bold;letter-spacing:1px;padding:12px;">
           &#x26A0; EMERGENCY SURFACE
         </button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Experimental</h2>
-      <div class="btn-row">
-        <button class="btn success" id="arm-btn" onclick="toggleArm()">ARM</button>
-        <button class="btn danger" onclick="send('/arm','POST',{arm:false})">DISARM</button>
-      </div>
-      <small style="color:#607d9f;font-size:.75rem;display:block;margin-top:8px;line-height:1.4;">
-        These MAVLink ARM/DISARM buttons are unreliable on this FCU (see below for the real physical
-        unlock/lock procedure that actually controls the propellers):
-      </small>
-      <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">
-        <img src="{{ url_for('static', filename='manual/powerray_unlock.jpg') }}" alt="Unlock diagram (thumbwheel left)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
-        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
-          <b>Unlocking:</b> first dial the left thumbwheel to the very left, then press the camera/Fish Finder
-          interface switch button until 1 second later, there's vibration to unlock. After unlocking,
-          the joystick can control the propeller rotation, battery level.
-        </small>
-      </div>
-      <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">
-        <img src="{{ url_for('static', filename='manual/powerray_lock.jpg') }}" alt="Lock diagram (thumbwheel right)" style="width:110px;background:#fff;border-radius:4px;flex-shrink:0">
-        <small style="color:#607d9f;font-size:.75rem;line-height:1.4;">
-          <b>Locking:</b> first dial the left thumbwheel to the very right, then press the camera/Fish Finder
-          interface switch button until 1 second later, there's vibration to lock. After locking, if
-          controlling the joystick, the propeller will not be responding.
-        </small>
       </div>
     </div>
 
@@ -355,6 +383,19 @@
     <div id="params-list"></div>
   </div>
 
+  <!-- Bottom: Log console -->
+  <div class="card" id="log-card">
+    <div id="log-toolbar">
+      <input type="text" id="log-search" placeholder="Filter log..." oninput="filterLog()">
+      <label><input type="checkbox" id="log-tail" checked onchange="onTailToggle()"> Tail</label>
+      <button class="btn" onclick="scrollLogEnd()">&#x2193; Scroll to end</button>
+      <button class="btn" onclick="copyLog()">&#x2398; Copy</button>
+      <button class="btn danger" onclick="clearLog()">Clear</button>
+      <span id="log-count"></span>
+    </div>
+    <div id="log"></div>
+  </div>
+
 </div>
 
 <script>
@@ -362,7 +403,7 @@ const socket = io();
 let armed = false;
 let recording = false;
 let throttle = 500;
-let joystickData = {x:0, y:0, z:500, r:0};
+let joystickData = {x:0, y:0, z:0, r:0};
 let jsInterval = null;
 let localJoystickActive = false;
 let allParams = {};
@@ -397,6 +438,10 @@ socket.on('telemetry', d => {
   document.getElementById('armed-badge').style.display = d.armed ? 'inline' : 'none';
   document.getElementById('arm-btn').textContent = d.armed ? 'DISARM' : 'ARM';
   document.getElementById('arm-btn').className = d.armed ? 'btn danger' : 'btn success';
+  if (d.nav_mode) {
+    currentNavMode = d.nav_mode;
+    updateNavModeUI();
+  }
 });
 
 socket.on('attitude', d => {
@@ -450,12 +495,7 @@ socket.on('rc_input', d => {
   // actively dragging the on-screen sticks or using a gamepad, so local
   // input doesn't visually fight with the echoed value.
   if (localJoystickActive || jsInterval) return;
-  jsLeftElem._setDotFromNorm(d.y, -d.x);
-  jsRightElem._setDotFromNorm(d.r, 0);
-  document.getElementById('js-left-val').textContent = 'P:' + d.x + ' R:' + d.y;
-  document.getElementById('js-right-val').textContent = 'Y:' + d.r;
-  document.getElementById('thr-val').textContent = d.z;
-  document.getElementById('throttle-slider').value = d.z;
+  applyRcEcho(d);
 });
 
 socket.on('param', d => {
@@ -483,11 +523,49 @@ const JOYSTICK_MODES = {
        right: { up: 'Forward',  down: 'Backward',  left: 'Turn L', right: 'Turn R' } },
 };
 
+// Which MODE is currently selected (drives both the reference legend AND the
+// real interactive joystick circles below).
+let currentMode = '4';
+
+// For a given mode + physical stick side ('left'/'right'), work out which
+// MAVLink channel its vertical/horizontal axis should drive, straight from
+// the JOYSTICK_MODES data (up === 'Up' means that stick controls depth/z,
+// otherwise it controls forward/back pitch/x; left/right present means that
+// stick also controls yaw/r, otherwise its horizontal axis is unused).
+function stickConfig(mode, side) {
+  const cfg = JOYSTICK_MODES[mode][side];
+  return {
+    vertical: cfg.up === 'Up' ? 'z' : 'x',
+    verticalLabel: cfg.up + ' / ' + cfg.down,
+    horizontal: cfg.left ? 'r' : null,
+    horizontalLabel: cfg.left ? (cfg.left + ' / ' + cfg.right) : null,
+  };
+}
+
 function updateJoystickModeRef() {
-  const mode = document.getElementById('joystick-mode-sel').value;
-  const cfg = JOYSTICK_MODES[mode];
+  currentMode = document.getElementById('joystick-mode-sel').value;
+  const cfg = JOYSTICK_MODES[currentMode];
   renderJmCross('jm-cross-left', cfg.left);
   renderJmCross('jm-cross-right', cfg.right);
+  applyStickTitles();
+  resetJoysticksToCenter();
+}
+
+function applyStickTitles() {
+  ['left', 'right'].forEach(side => {
+    const c = stickConfig(currentMode, side);
+    const titleEl = document.getElementById('js-' + side + '-title');
+    titleEl.textContent = c.verticalLabel + (c.horizontalLabel ? ' + ' + c.horizontalLabel : '');
+  });
+}
+
+function resetJoysticksToCenter() {
+  joystickData = {x: 0, y: 0, z: 0, r: 0};
+  jsLeftElem._setDotFromNorm(0, 0);
+  jsRightElem._setDotFromNorm(0, 0);
+  document.getElementById('js-left-val').textContent = stickConfig(currentMode, 'left').vertical === 'z' ? 'Z:0' : 'X:0';
+  document.getElementById('js-right-val').textContent = stickConfig(currentMode, 'right').vertical === 'z' ? 'Z:0' : 'X:0';
+  sendJoystick();
 }
 
 function renderJmCross(crossId, cfg) {
@@ -500,8 +578,6 @@ function renderJmCross(crossId, cfg) {
   });
 }
 
-updateJoystickModeRef();
-
 function updateActivationButtons(flagVal) {
   const activated = Number(flagVal) !== 0;
   document.getElementById('activate-btn').disabled = activated;
@@ -510,9 +586,13 @@ function updateActivationButtons(flagVal) {
 
 function makeJoystick(elem, dotElem, labelElem, axes) {
   let active = false;
-  const r = elem.offsetWidth / 2;
+
+  // Recomputed on every call (not captured once) so it's correct even if
+  // this ran before the element's layout/width was finalized.
+  function getR() { return elem.clientWidth / 2; }
 
   function setDotFromNorm(nx, ny) {
+    const r = getR();
     const scale = (r - 14) / 1000;
     dotElem.style.left = (r + nx * scale) + 'px';
     dotElem.style.top  = (r + ny * scale) + 'px';
@@ -520,6 +600,7 @@ function makeJoystick(elem, dotElem, labelElem, axes) {
   elem._setDotFromNorm = setDotFromNorm;
 
   function update(ex, ey) {
+    const r = getR();
     const rect = elem.getBoundingClientRect();
     let dx = ex - rect.left - r;
     let dy = ey - rect.top  - r;
@@ -534,7 +615,7 @@ function makeJoystick(elem, dotElem, labelElem, axes) {
   }
 
   function reset() {
-    dotElem.style.left = '50%'; dotElem.style.top = '50%';
+    setDotFromNorm(0, 0);
     axes(0, 0);
     labelElem.textContent = axes.label(0, 0);
   }
@@ -550,23 +631,71 @@ function makeJoystick(elem, dotElem, labelElem, axes) {
 const jsLeftElem  = document.getElementById('js-left');
 const jsRightElem = document.getElementById('js-right');
 
-const jslAxes = (nx, ny) => { joystickData.x = -ny; joystickData.y = nx; sendJoystick(); };
-jslAxes.label = (nx, ny) => 'P:' + (-ny) + ' R:' + nx;
+// Builds a mode-aware axes callback for a stick side ('left'/'right'). The
+// vertical drag (ny) drives whichever channel (z = depth or x = pitch) that
+// side currently controls per JOYSTICK_MODES; the horizontal drag (nx)
+// drives yaw (r) only if this side has a turn function in the current mode.
+function makeStickAxes(side, valElemId) {
+  const axes = (nx, ny) => {
+    const c = stickConfig(currentMode, side);
+    if (c.vertical === 'z') {
+      joystickData.z = -ny; // z: -1000..1000, center=0 (custom FCU calibration)
+    } else {
+      joystickData.x = -ny;
+    }
+    if (c.horizontal === 'r') {
+      joystickData.r = nx;
+    } else if (!c.horizontal) {
+      nx = 0; // horizontal drag ignored/disabled for this side in this mode
+    }
+    sendJoystick();
+    return {nx, ny};
+  };
+  axes.label = (nx, ny) => {
+    const c = stickConfig(currentMode, side);
+    const vLabel = c.vertical === 'z' ? 'Z:' + (-ny) : 'X:' + (-ny);
+    const hLabel = c.horizontal ? ' Y:' + nx : '';
+    return vLabel + hLabel;
+  };
+  return axes;
+}
+
+const jslAxes = makeStickAxes('left');
 makeJoystick(jsLeftElem, document.getElementById('js-left-dot'), document.getElementById('js-left-val'), jslAxes);
 
-const jsrAxes = (nx, ny) => { joystickData.r = nx; sendJoystick(); };
-jsrAxes.label = (nx, ny) => 'Y:' + nx;
+const jsrAxes = makeStickAxes('right');
 makeJoystick(jsRightElem, document.getElementById('js-right-dot'), document.getElementById('js-right-val'), jsrAxes);
-
-function updateThrottle(v) {
-  throttle = parseInt(v);
-  joystickData.z = throttle;
-  document.getElementById('thr-val').textContent = throttle;
-  sendJoystick();
-}
 
 function sendJoystick() {
   socket.emit('joystick', joystickData);
+}
+
+// Now that jsLeftElem/jsRightElem exist, apply the default mode's legend,
+// titles, and center the dots (also re-run on every mode change).
+updateJoystickModeRef();
+
+// Reflects an RC-echo / gamepad update {x,y,z,r} onto the two on-screen
+// circles, honoring whichever physical channel each stick maps to in the
+// currently selected mode.
+function applyRcEcho(d) {
+  joystickData = {x: d.x, y: d.y, z: d.z, r: d.r};
+  applyGamepadDots(d);
+}
+
+// Updates the on-screen dots/labels from an {x,y,z,r} snapshot without
+// touching joystickData or sending — used both by applyRcEcho and directly
+// by the gamepad loop (which already updated joystickData + sent itself).
+function applyGamepadDots(d) {
+  ['left', 'right'].forEach(side => {
+    const c = stickConfig(currentMode, side);
+    const ny = c.vertical === 'z' ? -d.z : -d.x;
+    const nx = c.horizontal === 'r' ? d.r : 0;
+    const elem = side === 'left' ? jsLeftElem : jsRightElem;
+    elem._setDotFromNorm(nx, ny);
+    const vLabel = c.vertical === 'z' ? 'Z:' + d.z : 'X:' + d.x;
+    const hLabel = c.horizontal ? ' Y:' + d.r : '';
+    document.getElementById('js-' + side + '-val').textContent = vLabel + hLabel;
+  });
 }
 
 window.addEventListener('gamepadconnected', e => {
@@ -578,17 +707,12 @@ window.addEventListener('gamepadconnected', e => {
       const x = Math.round(gp.axes[1] * -1000);
       const y = Math.round(gp.axes[0] * 1000);
       const r = Math.round(gp.axes[2] * 1000);
-      const z = Math.round((1 - gp.axes[3]) * 500);
+      const z = Math.round(gp.axes[3] * -1000); // -1000..1000, center=0
       joystickData = {x, y, z, r};
       sendJoystick();
       // Reflect the physical gamepad axes on the on-screen joystick dots too,
       // not just the numeric labels, so the UI visually matches real input.
-      jsLeftElem._setDotFromNorm(y, -x);
-      jsRightElem._setDotFromNorm(r, 0);
-      document.getElementById('js-left-val').textContent = 'P:' + x + ' R:' + y;
-      document.getElementById('js-right-val').textContent = 'Y:' + r;
-      document.getElementById('thr-val').textContent = z;
-      document.getElementById('throttle-slider').value = z;
+      applyGamepadDots({x, y, z, r});
     }, 50);
   }
 });
@@ -604,6 +728,21 @@ function toggleArm() {
   log((wantArm ? 'ARM' : 'DISARM') + ' requested...', 'info');
   socket.emit('arm', {arm: wantArm});
 }
+
+let currentNavMode = 'UNKNOWN';
+function updateNavModeUI() {
+  ['STABLE_IMAGE','DEPTH_FIXED'].forEach(m => {
+    const el = document.getElementById('nav-mode-btn-' + m);
+    if (el) el.classList.toggle('active', m === currentNavMode);
+  });
+}
+function setNavMode(want) {
+  if (want === currentNavMode) return;
+  log('Setting nav mode -> ' + want + '...', 'info');
+  fetch('/nav_mode', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nav_mode: want})})
+    .then(r=>r.json()).then(d=>log('nav_mode response: ' + JSON.stringify(d), 'info'));
+}
+
 
 function setMode(m) {
   socket.emit('set_mode', {mode: m});
@@ -732,15 +871,79 @@ function send(url, method, body) {
     .then(r=>r.json()).then(d=>log(JSON.stringify(d),'info'));
 }
 
+let logTailEnabled = true;
+let logFilterText = '';
+const LOG_MAX_LINES = 500;
+
 function log(msg, cls) {
   cls = cls || '';
   const l = document.getElementById('log');
   const d = document.createElement('div');
   d.className = 'log-line ' + cls;
   d.textContent = new Date().toLocaleTimeString() + ' ' + msg;
+  if (logFilterText && d.textContent.toLowerCase().indexOf(logFilterText) === -1) {
+    d.classList.add('hidden');
+  }
   l.appendChild(d);
+  if (l.children.length > LOG_MAX_LINES) l.removeChild(l.firstChild);
+  if (logTailEnabled) l.scrollTop = l.scrollHeight;
+  updateLogCount();
+}
+
+function updateLogCount() {
+  const l = document.getElementById('log');
+  const total = l.children.length;
+  const visible = total - l.querySelectorAll('.log-line.hidden').length;
+  document.getElementById('log-count').textContent = visible + ' / ' + total + ' lines';
+}
+
+function filterLog() {
+  logFilterText = document.getElementById('log-search').value.toLowerCase();
+  const l = document.getElementById('log');
+  Array.from(l.children).forEach(d => {
+    d.classList.toggle('hidden', !!logFilterText && d.textContent.toLowerCase().indexOf(logFilterText) === -1);
+  });
+  updateLogCount();
+  if (logTailEnabled) l.scrollTop = l.scrollHeight;
+}
+
+function scrollLogEnd() {
+  const l = document.getElementById('log');
   l.scrollTop = l.scrollHeight;
-  if (l.children.length > 100) l.removeChild(l.firstChild);
+}
+
+function onTailToggle() {
+  logTailEnabled = document.getElementById('log-tail').checked;
+  if (logTailEnabled) scrollLogEnd();
+}
+
+// If the user scrolls away from the bottom manually, auto-untail so new
+// lines don't yank the view back down; re-check the "Tail" box to resume.
+document.addEventListener('DOMContentLoaded', () => {
+  const l = document.getElementById('log');
+  if (!l) return;
+  l.addEventListener('scroll', () => {
+    const atBottom = l.scrollHeight - l.scrollTop - l.clientHeight < 4;
+    if (!atBottom && logTailEnabled) {
+      logTailEnabled = false;
+      document.getElementById('log-tail').checked = false;
+    }
+  });
+});
+
+function copyLog() {
+  const l = document.getElementById('log');
+  const text = Array.from(l.children)
+    .filter(d => !d.classList.contains('hidden'))
+    .map(d => d.textContent).join('\n');
+  navigator.clipboard.writeText(text)
+    .then(() => log('Log copied to clipboard (' + text.split('\n').length + ' lines).', 'ok'))
+    .catch(e => log('Copy failed: ' + e, 'err'));
+}
+
+function clearLog() {
+  document.getElementById('log').innerHTML = '';
+  updateLogCount();
 }
 
 fetch('/state').then(r=>r.json()).then(d=>{

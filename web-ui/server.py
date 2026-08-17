@@ -70,6 +70,7 @@ state = {
     'armed': False,
     'mode': 'UNKNOWN',
     'custom_mode': 0,
+    'nav_mode': 'UNKNOWN',   # 'STABLE_IMAGE' or 'DEPTH_FIXED', from HEARTBEAT.base_mode bit 0
     'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0,
     'battery_v': 0.0, 'battery_a': 0.0, 'battery_pct': 0,
     'depth': 0.0, 'vx': 0.0, 'vy': 0.0, 'vz': 0.0,
@@ -127,7 +128,9 @@ def mav_loop(m):
             state['mode']  = MODES.get(cm, f'MODE_{cm}')
             state['custom_mode'] = cm
             state['armed'] = bool(bm & 0x80)
-            broadcast('telemetry', {'mode': state['mode'], 'armed': state['armed']})
+            state['nav_mode'] = 'DEPTH_FIXED' if (bm & 0x01) else 'STABLE_IMAGE'
+            broadcast('telemetry', {'mode': state['mode'], 'armed': state['armed'],
+                                     'nav_mode': state['nav_mode']})
 
         elif t == 'ATTITUDE':
             state['roll']  = round(math.degrees(msg.roll),  1)
@@ -448,6 +451,20 @@ def arm():
             0, 1.0 if do_arm else 0.0, 0,0,0,0,0,0)
     return jsonify({'status': 'sent', 'arm': do_arm})
 
+@app.route('/nav_mode', methods=['POST'])
+def set_nav_mode():
+    """Set the navigation mode (Stable Image / Depth-Fixed) — reverse-engineered
+    and confirmed as bit 0 of HEARTBEAT.base_mode (0=Stable Image, 1=Depth-Fixed).
+    Confirmed working via MAVLink SET_MODE, same effect as the RC's mode button."""
+    if not mav: return jsonify({'error': 'MAVLink not connected'})
+    want = request.json.get('nav_mode', 'STABLE_IMAGE')
+    current_bm = 1 if state.get('nav_mode') == 'DEPTH_FIXED' else 0
+    new_bit = 1 if want == 'DEPTH_FIXED' else 0
+    new_bm = (current_bm & ~1) | new_bit
+    with mav_lock:
+        mav.mav.set_mode_send(mav.target_system, new_bm, state.get('custom_mode', 0))
+    return jsonify({'status': 'sent', 'requested_base_mode': new_bm})
+
 @app.route('/mode', methods=['POST'])
 def set_mode():
     if not mav: return jsonify({'error': 'MAVLink not connected'})
@@ -486,7 +503,7 @@ def manual_control():
         mav.mav.manual_control_send(
             mav.target_system,
             int(d.get('x',0)), int(d.get('y',0)),
-            int(d.get('z',500)), int(d.get('r',0)), 0)
+            int(d.get('z',0)), int(d.get('r',0)), 0)
     return jsonify({'status': 'sent'})
 
 @app.route('/params')
@@ -639,7 +656,7 @@ def on_joystick(data):
         mav.mav.manual_control_send(
             mav.target_system,
             int(data.get('x',0)), int(data.get('y',0)),
-            int(data.get('z',500)), int(data.get('r',0)), 0)
+            int(data.get('z',0)), int(data.get('r',0)), 0)
 
 @sio.on('arm')
 def on_arm(data):
